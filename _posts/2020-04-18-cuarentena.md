@@ -4,6 +4,7 @@ author: David E. Barrera
 date: 2020/04/18
 tags: ['salud', 'quedate en casa', 'cuarentena', 'covid-19', 'coronavirus', 'ecuador']
 layout: post
+comments: true
 ---
 Voy a contar la cronica de como he vivido con mi familia la crisis de salud mundial,
 causada por el coronavirus.
