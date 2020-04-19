@@ -1,0 +1,15 @@
+.post-item {
+    border-bottom: 2px dashed rgba(192, 192, 192, 0.25);
+}
+
+.post-item:last-of-type {
+    border-bottom: none;
+}
+
+.bg-midnight-navy {
+    background-color: #353e4a;
+}
+
+a:hover {
+    text-decoration: none;
+}

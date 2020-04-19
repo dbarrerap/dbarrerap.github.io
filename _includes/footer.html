@@ -1,0 +1,28 @@
+<hr>
+<footer class="footer">
+    <div class="row">
+        <!-- Contact -->
+        <div class="col-md-3">
+            <ul class="contact-list list-unstyled">
+                <li class="p-name">
+                    {%- if site.author -%}
+                    {{ site.author | escape }}
+                    {%- else -%}
+                    {{ site.title | escape }}
+                    {%- endif -%}
+                </li>
+                {%- if site.email -%}
+                <li><a class="u-email" href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+                {%- endif -%}
+            </ul>
+        </div>
+        <!-- Social -->
+        <div class="col-md-3">
+            {%- include social.html -%}
+        </div>
+        <!-- Description -->
+        <div class="col-md-6">
+            <p>{{- site.description | escape -}}</p>
+        </div>
+    </div>
+</footer>

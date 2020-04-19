@@ -1,0 +1,23 @@
+---
+layout: default
+---
+<article>
+  <header class="text-center mb-3">
+    <h1>{{ page.title | escape }}</h1>
+    <div class="row text-muted">
+      <div class="col-md-2 offset-md-4"><i class="far fa-user"></i> David E. Barrera</div>
+      <div class="col-md-2">
+        <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+          {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+          <i class="far fa-calendar"></i> {{ page.date | date: date_format }}
+        </time>
+      </div>
+    </div>
+  </header>
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      {{ content }}
+    </div>
+  </div>
+</article>
+

@@ -1,0 +1,62 @@
+---
+layout: default
+---
+<div class="row">
+  <div class="col-lg-9">
+    {%- if site.posts.size > 0 -%}
+    <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
+    <ul class="post-list list-unstyled">
+      {%- for post in paginator.posts -%}
+      <li class="post-item">
+        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+        <span class="post-meta">
+          <i class="far fa-calendar"></i> {{ post.date | date: date_format }}
+        </span>
+        <h3>
+          <a class="post-link" href="{{ post.url | relative_url }}">
+            {{ post.title | escape }}
+          </a>
+          </h3>
+          {%- if site.show_excerpts -%}
+          {{ post.excerpt }}
+          {%- endif -%}
+      </li>
+      {%- endfor -%}
+    </ul>
+    {%- endif -%}
+  </div>
+  <div class="col-lg-3">
+    {% include personal_card.html %}
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-md-6 offset-md-3">
+    <!-- Paginator -->
+    {% if paginator.total_pages > 1 %}
+    <ul class="pagination justify-content-center">
+      {% if paginator.previous_page %}
+      <li class="page-item"><a class="page-link" href="{{ paginator.previous_page_path | relative_url }}">&laquo; Prev</a></li>
+      {% else %}
+      <li class="page-item disabled"><span class="page-link">&laquo; Prev</span></li>
+      {% endif %}
+
+      {% for page in (1..paginator.total_pages) %}
+      {% if page == paginator.page %}
+      <li class="page-item active"><span class="page-link">{{ page }}</span></li>
+      {% elsif page == 1 %}
+      <li class="page-item"><a class="page-link" href="{{ paginator.previous_page_path | relative_url }}">{{ page }}</a></li>
+      {% else %}
+      <li class="page-item"><a class="page-link" href="{{ site.paginate_path | relative_url | replace: ':num', page }}">{{ page }}</a></li>
+      {% endif %}
+      {% endfor %}
+
+      {% if paginator.next_page %}
+      <li class="page-item"><a class="page-link" href="{{ paginator.next_page_path | relative_url }}">Next &raquo;</a></li>
+      {% else %}
+      <li class="page-item disabled"><span class="page-link">Next &raquo;</span></li>
+      {% endif %}
+    </ul>
+    {% endif %}
+  </div>
+</div>
+
