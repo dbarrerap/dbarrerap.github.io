@@ -1,5 +1,17 @@
 <ul class="list-unstyled">
-    <li><i class="fab fa-twitter"></i> {{ site.twitter_username }}</li>
-    <li><i class="fab fa-instagram"></i> {{ site.instagram_username }}</li>
-    <li><i class="fab fa-github"></i> {{ site.github_username }}</li>
+    <li>
+        <a href="https://twitter.com/{{ site.twitter_username }}">
+            <i class="fab fa-twitter"></i> {{ site.twitter_username }}
+        </a>
+    </li>
+    <li>
+        <a href="https://instagram.com/{{ site.instagram_username }}">
+            <i class="fab fa-instagram"></i> {{ site.instagram_username }}
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/{{ site.github_username }}">
+            <i class="fab fa-github"></i> {{ site.github_username }}
+        </a>
+    </li>
 </ul>
