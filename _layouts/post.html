@@ -13,6 +13,11 @@ layout: default
         </time>
       </div>
     </div>
+    <div class="row justify-content-md-center text-muted">
+      {% for tag in page.tags %}
+      <div class="col-md-auto"><i class="fas fa-hashtag"></i>{{ tag }}</div>
+      {% endfor %}
+    </div>
   </header>
   <div class="row">
     <div class="col-md-10 offset-md-1">
