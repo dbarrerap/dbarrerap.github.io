@@ -7,8 +7,10 @@
     <title>{{ site.title }}{% if page.title %} - {{ page.title }}{% endif %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="{ '/assets/css/prism.css' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}" />
     <script src="https://kit.fontawesome.com/758a61b567.js" crossorigin="anonymous"></script>
+    <script src="{{ '/assets/js/prism.js' | relative_url }}"></script>
     {%- feed_meta -%}
     <!-- Google AdSense -->
     <script data-ad-client="ca-pub-4835658405466588" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
