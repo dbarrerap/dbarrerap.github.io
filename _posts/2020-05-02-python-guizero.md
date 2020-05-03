@@ -45,7 +45,7 @@ Ahora, añadamos contenido a nuestra ventana. Los elementos, tales como texto, b
 from guizero import App, Text
 ```
 
-Todo el codigo que crea widgets debe ser escrito antes de la instucción de ```app.display()```.
+Todo el codigo que crea widgets debe ser escrito antes de la instrucción ```app.display()```.
 
 ```python
 from guizero import App, Text
@@ -55,7 +55,7 @@ app.display()
 
 La linea ```app.display()``` inicia un bucle en el cual constantemente está esperando un clic en un boton o que algun cambio se haya dado, llamado ```evento```, y automaticamente actualizar la pantalla respectivamente. Este bucle bloquea cualquier codigo que se escriba despues, pensar como un loop infinito.
 
-### Texto
+### Text
 
 Probablemente es el widget mas comun y simple, lo que hace es mostrar un texto en la ventana.
 
@@ -65,23 +65,23 @@ Agregar ```Text``` a la sentencia de importación y agregar el widget a la inter
 mensaje = Text(app, text='Mi primera app')
 ```
 
-Aqui hemos creado un widget Text con el nombre ```mensaje```. El primer argumento le dice al widget quien es el elemento padre, en este caso la ventana principal, la cual creamos en anteriormente.
+Aqui hemos creado un widget Text con el nombre ```mensaje```. El primer argumento le dice al widget quien es el elemento padre, en este caso la ventana principal, la cual habíamos creado anteriormente.
 
 <div class="row"><div class="col-md-4 offset-md-4">
 <img src="/assets/ScreenShot2020-05-02_2158.png">
 </div></div>
 
-Debería verse como en la imagen arriba. Notas que le dijimos al widget el ```Text``` el texto a mostrar mediante ```text='Mi primera app'```? Esto es denominado un _argumento clave_, porque se ha especificado la clave ```text``` y el valor, o mas bien texto, a mostrar. Existen otros argumentos clave, los cuales se pueden agregar separándolos por comas.
+Debería verse como en la imagen arriba. Notas que le dijimos al widget ```Text``` el texto a mostrar mediante ```text='Mi primera app'```? Esto es denominado un _argumento clave_, porque se ha especificado la clave ```text``` y el valor, o mas bien texto, a mostrar. Existen otros argumentos clave, los cuales se pueden agregar separándolos por comas.
 
 ```python
 mensaje = Text(app, text='Mi primera app', size=36, font="Times New Roman", color="#003b6f")
 ```
 
-Leyendo [la documentación](https://lawsie.github.io/guizero/text/), podemos ver toda la lista de argumentos que pueden usarse, asi como sus posibles valores. En el ejemplo he usado ```size``` para el tamaño, ```font``` para la tipografia, la cual depende de la disponibilidad en el sistema, y por ultimo ```color```, pero no todos los colores pueden ser definidos por su nombre por lo cual tambien acepta un color usando su valor en hexadecimal.
+Leyendo [la documentación](https://lawsie.github.io/guizero/text/), podemos ver toda la lista de argumentos que pueden usarse, asi como sus posibles valores. En el ejemplo he usado ```size``` para el tamaño, ```font``` para la tipografia, la cual depende de la disponibilidad en el sistema, y por ultimo ```color```, pero no todos los colores pueden ser definidos por su nombre por lo cual tambien acepta un color usando su valor en hexadecimal, como lo he hecho en el ejemplo.
 
 ### TextBox
 
-El widget TextBox es usado para que el usuario pueda escribir datos (como el metodo ```input()```). Agreguemos uno a nuestra aplicación.
+El widget TextBox es usado para que el usuario pueda ingresar datos (como el metodo ```input()```). Agreguemos uno a nuestra aplicación.
 
 Agreguemos el widget a la sentencia de importación.
 
@@ -101,7 +101,7 @@ Hay un argumento clave llamado ```width``` el cual permite hacer mas ancho en ca
 
 ```PushButton``` nos permite crear un boton. Cuando se presiona el boton, este llama a una función.
 
-Para su funcionamiento, la función a llamar debe estar creada previo a la creación de los widgets.
+Para su correcto funcionamiento, la función a llamar debe estar creada previo a la creación de los widgets.
 
 ```python
 def recibir_nombre():
@@ -116,19 +116,19 @@ A continuación, agregamos ```PushButton``` a nuestra sentencia de importación.
 actualizar_texto = PushButton(app, command=recibir_nombre, text='Escribir mi nombre')
 ```
 
-El primer argumento le dice al boton quien es su elemento padre. A continuación usamos argumentos clave: ```command``` le dice al boton cual función ejecutar cuando se presiona y ```text``` es el texto a mostrar en el boton. Guardamos y ejecutamos. Escribimos nuestro nombre en el campo de texto y presionamos el boton.
+El primer argumento le dice al boton quien es su elemento padre, esto es común entre todos los widgets. A continuación usamos argumentos clave: ```command``` le dice al boton cual función ejecutar cuando se presiona y ```text``` es el texto a mostrar en el boton. Guardamos y ejecutamos. Escribimos nuestro nombre en el campo de texto y presionamos el boton.
 
 <div class="row"><div class="col-md-4 offset-md-4">
 <img src="/assets/ScreenShot2020-05-03_1215.png">
 </div></div>
 
-Como ven en el ejemplo, al presionar el boton, se actualiza el texto con el nombre escrito.
+Como ven en el ejemplo, al presionar el boton, se actualiza el texto con el texto escrito.
 
 ### Slider
 
-Un ```slider```, o deslizador, nos permite escoger facilmente un valor dentro de un rango de valores, con un deslizador de volumen.
+Un ```Slider```, o deslizador, nos permite escoger facilmente un valor dentro de un rango de valores, como un deslizador de volumen.
 
-Asi como el boton, debemos crear la función que es llamada al mover el deslizador previo a la creación del widget.
+Asi como el boton, debemos crear la función que es llamada al mover el deslizador previo a la creación del widget, esta función es llamada ```callback```.
 
 ```python
 def cambiar_tamano(valor):
@@ -153,7 +153,7 @@ El widget ```Picture``` nos permite incluir imagenes a nuestra aplicacion. Depen
 $ pip3 install guizero[images]
 ```
 
-Muy bien, ahora pondremos una imagen junto a nuestra aplicacion. Tambien puede estar en una sub-carpeta, en mi caso creare una carpeta llamada ```imagenes``` y pondre una imagen de un Raspberry Pi dentro.
+Muy bien, ahora pondremos una imagen junto a nuestra aplicación. Tambien puede estar en una sub-carpeta, en mi caso creare una carpeta llamada ```imagenes``` y pondre una imagen de un Raspberry Pi dentro.
 
 Ahora, agregamos ```Picture``` a la sentencia de importación y agregamos el widget a la interfaz.
 
@@ -161,15 +161,15 @@ Ahora, agregamos ```Picture``` a la sentencia de importación y agregamos el wid
 imagen = Picture(app, image='imagenes/raspberry-pi.jpg', width=240, height=120)
 ```
 
-Tambien se puede modificar el tamaño de la imagen usando los argumentos clave ```width``` y ```height```. Consultar la [documentacion](https://lawsie.github.io/guizero/picture/) para mas informacion.
+Tambien se puede modificar el tamaño de la imagen usando los argumentos clave ```width``` y ```height```. Consultar la [documentacion](https://lawsie.github.io/guizero/picture/) para mas información.
 
-Al ejecutar el codigo, nuestra aplicación debe verse asi:
+Al ejecutar el codigo, nuestra aplicación debe verse de la siguiente manera:
 
 <div class="row"><div class="col-md-4 offset-md-4">
 <img src="/assets/ScreenShot2020-05-03_1501.png">
 </div></div>
 
-### Codigo Completo
+## Codigo Completo
 
 ```python
 from guizero import App, Text, TextBox, PushButton, Slider, Picture
