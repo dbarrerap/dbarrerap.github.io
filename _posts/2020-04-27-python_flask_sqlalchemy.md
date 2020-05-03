@@ -3,10 +3,17 @@ title: Getting started with MariaDB using Docker, Python and Flask
 author: David E. Barrera
 date: 2020/04/27
 layout: post
+<<<<<<< HEAD
 tags: ['python', 'flask', 'sqlalchemy', 'mariadb', 'mysql', 'tutorial']
 comments: true
 ---
 I've written this short walkthrough to provide a boilerplate for greater applications using MariaDB (a drop-in replacement of MySQL) with Docker and Python with Flask and SQLAlchemy. This is my first English post, so pardon my French.
+=======
+tags: ['python', 'flask', 'mariadb', 'mysql', 'tutorial']
+comments: true
+---
+I've written this short walkthrough to provide a boilerplate for greater applications using MariaDB (a drop-in replacement of MySQL) with Docker and Python (with the help of Flask). This is my first English post, so pardon my French.
+>>>>>>> 9b9f97447f5838e1398b3278f5fc3ba29b706830
 
 ## Docker? What and why?
 
