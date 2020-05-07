@@ -23,7 +23,7 @@ Qt Designer es una aplicacion que nos permitira crear una interfaz grafica de ma
 
 ## Signals + Slots
 
-Qt maneja una nomenclatura diferente a las usuales, pero no es de espantarse. Una señal, ```signal```, es lo que en otros lenguajes se denomina un ```evento```, por ejemplo: ```clicked```, ```valueChanged``` son un ejemplo.
+Qt maneja una nomenclatura diferente a las usuales, pero no es de espantarse. Una señal, ```signal```, es lo que en otros lenguajes se denomina un ```evento```, por ejemplo: ```clicked```, ```valueChanged```.
 
 Por otro lado, las ranuras, ```slots```, se denomina la funcion llamada cuando se emite un evento, tambien llamado un ```callback```.
 
@@ -63,7 +63,7 @@ if __name__ == "__main__":
 
 Parece mucho, pero esto ayuda a que la ventana mantenga su estado. Lo cual nos beneficia en nuestro ejemplo. Si ejeutamos el codigo, nos debe aparecer una ventana vacia.
 
-Muy bien, ahora haremos algo mas interactivo, un contador! Para esto necesitaremos 2 widgets principalmente, un ```QLabel``` y un ```QPushButton```. Yo incluire una segunda etiqueta y un ```QVBoxLayout``` por cuestiones cosmeticas. Un VBox lo que hace es ubicar los widgets de manera vertical y con cierto espacion entre los componentes y el filo de la ventana.
+Muy bien, ahora haremos algo mas interactivo, un contador! Para esto necesitaremos 2 widgets principalmente, un ```QLabel``` y un ```QPushButton```. Yo incluire una segunda etiqueta y un ```QVBoxLayout``` por cuestiones cosmeticas. Un VBox lo que hace es ubicar los widgets de manera vertical y con cierto espacio entre los componentes y el filo de la ventana.
 
 ```python
 # counter.py
@@ -76,7 +76,7 @@ class MiVentana(QMainWindow):
         self.setWindowTitle('Mi Primera App con PyQt')
         self.centralWidget = QWidget()
 
-        self.verticalLayout = QVBoxLayout(self.central)
+        self.verticalLayout = QVBoxLayout(self.centralWidget)
         self.lbl_text = QLabel('Has presionado el boton esta cantidad de veces:')
         self.verticalLayout.addWidget(self.lbl_text)
         self.lbl_count = QLabel('0')
@@ -115,7 +115,7 @@ class MiVentana(QMainWindow):
 
         self.contador = 0
 
-        self.verticalLayout = QVBoxLayout(self.central)
+        self.verticalLayout = QVBoxLayout(self.centralWidget)
         self.lbl_text = QLabel('Has presionado el boton esta cantidad de veces:')
         self.verticalLayout.addWidget(self.lbl_text)
         self.lbl_count = QLabel('0')
@@ -138,19 +138,19 @@ if __name__ == "__main__":
     sys.exit(app.exec_())
 ```
 
-Perfecto! Ahora tenemos una pequeña app que cuenta cuantas veces hacemos clic en un boton. 
+Perfecto! Ahora tenemos una pequeña app que cuenta cuantas veces hemos dado un clic en el boton. 
 
 <div class="row"><div class="col-md-4 offset-md-4">
 <img src="/assets/ScreenShot2020-05-07_1420.png" class="img-fluid">
 </div></div>
 
-Pero repasemos lo que hemos visto.
+Repasemos lo que hemos visto.
 
 Hemos visto como usar un ```QVBoxLayout``` para organizar nuestros widgets de manera vertical en la aplicacion. Tambien existe un ```QHBoxLayout``` que nos permite organizar de manera horizontal.
 
-Tambien hemos visto como establecer y actualizar el texto en un ```QLabel```, mediante el uso del metodo ```setText()```. Algo muy particular es que solo recibe elementos del tipo String.
+Tambien hemos visto como establecer y actualizar el texto en un ```QLabel```, mediante el uso del metodo ```setText()```. Algo muy particular es que solo recibe elementos del tipo String. Por lo cual si es de escribir un numero, hay que convertirlo a texto.
 
-Al crear una clase para manejar el contenido de la ventana, nos da la flexibilidad de manejar su estado, esto es, nos permite actualizar los elementos internos, en este ejemplo en particular la etiqueta ```lbl_count```, como lo hemos hecho en el metodo ```contar()```.
+Al crear una clase para manejar el contenido de la ventana, nos da la flexibilidad de manejar su estado, esto es, nos permite actualizar los elementos internos; en este ejemplo en particular, nos permite actualiza el contenido de la etiqueta ```lbl_count```, como lo hemos hecho en el metodo ```contar()```.
 
 Muy bien, ahora a lo que vinimos. Vamos a crear una aplicacion que nos permitira convertir una moneda en otra, por ejemplo de Dolares Americanos a Euros.
 
@@ -209,14 +209,14 @@ if __name__ == "__main__":
 La interfaz de nuestra aplicacion se ve de la siguiente manera.
 
 <div class="row"><div class="col-md-4 offset-md-4">
-<img src="/assets/ScreenShot2020-05-07_1421.png" class="img-fluid">
+<img src="/assets/ScreenShot2020=05-07_1421.png" class="img-fluid">
 </div></div>
 
-Veamos lo nuevo en este codigo. Aqui hemos usado un nuevo widget llamado ```QComboBox``` que nos permite la seleccion en una lista de items. Para agregar items tenemos dos formas de hacerlo: ```addItem()```, para agregar item por item, y ```addItems()```, para agregar una lista de items. De manera predeterminada se escoge el primer elemento de la lista, pero si deseamos escoger otro elemento usamos el metodo ```setCurrentIndex()``` con un valor valido, esto es menor a la longitud de la lista, ya que este empieza en 0.
+Veamos lo nuevo en este codigo. Aqui hemos usado un nuevo widget llamado ```QComboBox``` que nos permite la seleccion en una lista de items. Para agregar items tenemos dos formas de hacerlo: ```addItem()```, para agregar item por item, y ```addItems()```, para agregar una lista de items. De manera predeterminada se escoge el primer elemento de la lista, pero si deseamos escoger otro elemento usamos el metodo ```setCurrentIndex()``` con un valor valido, esto es menor a la longitud de la lista, ya que el indice en una lista empieza en 0.
 
-Tambien, como debemos proveer un valor monetario para realizar el cambio, usamos un ```QLineEdit``` que nos permite el ingreso de teclado a la aplicacion. De este podemos modificar una propiedad de solo lectura mediante el metodo ```setReadOnly()```.
+Tambien, como debemos proveer un valor monetario para realizar el cambio, usamos un ```QLineEdit``` que nos permite el ingreso de datos via teclado a la aplicacion. De este podemos modificar una propiedad de solo lectura mediante el metodo ```setReadOnly()```, como lo hemos en el segundo campo.
 
-Un detalle adicional es el uso de ```lambda``` al momento de conectar la señal ```clicked``` con el slot ```convertir```. De manera predeterminada el metodo ```connect()``` solamente acepta la referencia a un metodo, los cual nos bloquea el enviar argumentos al metodo. Como es necesario en este caso, ya que debemos enviar las monedas y monto para hacer el cambio, usamos un lambda que nos permite hacer justamente esto [[Fuente](https://eli.thegreenplace.net/2011/04/25/passing-extra-arguments-to-pyqt-slot)].
+Un detalle adicional es el uso de ```lambda``` al momento de conectar la señal ```clicked``` con el slot ```convertir()```. De manera predeterminada el metodo ```connect()``` solamente acepta la referencia a un metodo, los cual nos bloquea el enviar argumentos al metodo. Como es necesario el envio de argumentos en este caso, ya que debemos enviar las monedas y monto para hacer el cambio, usamos una lambda que nos permite hacer justamente esto [[Fuente](https://eli.thegreenplace.net/2011/04/25/passing-extra-arguments-to-pyqt-slot)].
 
 Finalmente, tenemos el metodo ```convertir()```, cuyos parametros son el monto a convertir, la moneda base y la moneda de conversion. Para realizar la conversion, consultamos con una API, [Exchange Rates](https://exchangeratesapi.io/), el cambio del dia mediante la libreria ```requests```. Usamos el metodo ```get()``` para realizar la consulta pasandole dos argumentos esenciales, la URL a consultar y los parametros de consulta.
 
@@ -226,9 +226,9 @@ data = {'base': cur_from, 'symbols': cur_to}
 r = requests.get(url, data)
 ```
 
-Al hacer la consulta la URL a consultar se convierte en ```https://api.exchangeratesapi.io/latest?base=USD&symbols=EUR```, siguiendo el ejemplo de convertir de Dolares Americanos a Euros.
+Al hacer la consulta, la URL se convierte en ```https://api.exchangeratesapi.io/latest?base=USD&symbols=EUR```, siguiendo el ejemplo de convertir de Dolares Americanos a Euros.
 
-Si existe una respuesta satisfactoria, esto es ```status_code``` igual a 200, toma los datos de la respuesta de la API, realiza el cambio de divisas y la muestra en el segundo campo de texto.
+Si existe una respuesta satisfactoria, esto es si el ```status_code``` es igual a 200, toma los datos de la respuesta de la API, realiza el cambio de divisas y la muestra en el segundo campo de texto.
 
 ## Conclusion
 
