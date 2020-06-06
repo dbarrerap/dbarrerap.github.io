@@ -28,8 +28,8 @@ Estados dicretos? Rango continuo? Analicemos esto graficamente.
         </figure>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-4 offset-md-4">
+<div class="row justify-content-center">
+    <div class="col-md-6 offset-md-3">
         <span class="text-muted">Imágenes tomadas de <a href="https://learn.sparkfun.com/tutorials/analog-vs-digital/all">learn.sparkfun.com</a></span>
     </div>
 </div>
@@ -46,8 +46,8 @@ Para los sistemas digitales esta precisión trae consigo un problema. De existir
         </figure>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-4 offset-md-4">
+<div class="row justify-content-center">
+    <div class="col-md-6 offset-md-3">
         <span class="text-muted">Imágen tomada de <a href="https://commons.wikimedia.org/wiki/File:Imagen_4.png">Wikipedia</a></span>
     </div>
 </div>
@@ -60,7 +60,7 @@ Es bien sabido que es facil engañar al cerebro, casi hasta el punto que el ser 
 
 Supongamos una bombilla normal, la encendemos durante un segundo y apagamos por un instante con un switch. Obviamente percibimos ese cambio de estado por limitaciones del sistema, pero supongamos que ese apagado sucede durante una milesima de segundo, podriamos realmente decir que la bombilla fue apagada? Para el ojo humano la bombilla siempre esta encendida, nunca hubo un cambio. 
 
-Ok, ahora reduzcamos el tiempo que la bombilla esta encendida y el tiempo de apagado aumenta de manera equitativa, manteniendo el mismo tiempo total. El tiempo que le toma a la bombilla encenderse ahora es menor, por lo cual no enciende por completo y se vuelve a apagar. Para el ojo humano esto se vería como si brillara con menor intensidad.
+Ok, ahora reduzcamos el tiempo que la bombilla esta encendida y el tiempo de apagado aumenta de manera equitativa, manteniendo el mismo tiempo total. El tiempo que le toma a la bombilla encenderse ahora es menor, por lo cual no enciende por completo y se vuelve a apagar. Para el ojo humano esto se vería como si brillara con menor intensidad. Esto es denominado **persistencia de vision**, el cual es un supuesto fenómeno visual descubierto por Peter Mark Roget que demostraría como una imagen permanece en la retina humana una décima de segundo más, antes de desaparecer por completo, esto permitiría que veamos la realidad como una secuencia de imágenes ininterrumpidas y que podamos calcular fácilmente la velocidad y dirección de un objeto que se desplaza, si no existiese, veríamos pasar la realidad como sucesión de imágenes independientes y estáticas.
 
 <div class="row">
     <div class="col-md-4 offset-md-4">
@@ -70,8 +70,8 @@ Ok, ahora reduzcamos el tiempo que la bombilla esta encendida y el tiempo de apa
         </figure>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-4 offset-md-4">
+<div class="row justify-content-center">
+    <div class="col-md-6 offset-md-3">
         <span class="text-muted">Imágen tomada de <a href="https://learn.sparkfun.com/tutorials/pulse-width-modulation">learn.sparkfun.com</a></span>
     </div>
 </div>
@@ -90,8 +90,8 @@ Se puede usar esta técnica para controlar el brillo de un LED.
         </figure>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-4 offset-md-4">
+<div class="row justify-content-center">
+    <div class="col-md-6 offset-md-3">
         <span class="text-muted">Imágen tomada de <a href="https://arduinogetstarted.com/tutorials/arduino-led-fade">ArduinoGetStarted</a></span>
     </div>
 </div>
@@ -106,8 +106,8 @@ De tener un LED RGB, podemos alterar el valor de cada color para obtener diferen
         </figure>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-4 offset-md-4">
+<div class="row justify-content-center">
+    <div class="col-md-6 offset-md-3">
         <span class="text-muted">Imágen tomada de <a href="https://www.dynamoelectronics.com/tienda/led-rgb-5mm/">DynamoElectronics</a></span>
     </div>
 </div>
@@ -122,10 +122,14 @@ Tambien se puede usar esta tecnica para controlar un motor servo.
         </figure>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-4 offset-md-4">
+<div class="row justify-content-center">
+    <div class="col-md-6 offset-md-3">
         <span class="text-muted">Imágen tomada de <a href="https://blog.330ohms.com/2019/08/24/microbit-tutorial-6-como-utilizar-los-servomotores/">Blog 330ohms</a></span>
     </div>
 </div>
 
+La técnica de PWM se utiliza en una variedad de aplicaciones, particularmente para el control. Ya sabes que puede usarse para atenuar los LED y controlar el ángulo de los servomotores, y ahora puedes comenzar a explorar otros posibles usos.
 
+En el siguiente video, podemos ver un LED RGB siendo controlado con PWM en un difusor:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/M9ySSC35E9Q?start=69" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
