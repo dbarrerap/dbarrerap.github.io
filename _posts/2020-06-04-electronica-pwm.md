@@ -128,8 +128,57 @@ Tambien se puede usar esta tecnica para controlar un motor servo.
     </div>
 </div>
 
+## Implmentación
+
+Existen multiples placas de desarrollo para proyectos de electrónica, el mas usual es Arduino UNO.
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <figure class="figure">
+            <img src="https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png" class="figure-img img-fluid" alt="Diagrama de pines de Arduino UNO">
+            <figcaption class="figure-caption">Diagrama de pines de Arduino UNO</figcaption>
+        </figure>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-md-6 offset-md-3">
+        <span class="text-muted">Imágen tomada de <a href="https://store.arduino.cc/usa/arduino-uno-rev3">arduino.cc</a></span>
+    </div>
+</div>
+
+En el diagrama podemos ver que unos cuantos pines son capaces de tener salida PWM, en particular los pines 3, 5, 6, 9, 10, 11. Usaremos el pin 9. Vamos al codigo.
+
+```Arduino
+int brightness = 0;  // Creamos una variable para controlar el brillo del LED.
+
+void setup()
+{
+  pinMode(9, OUTPUT);  // Configuramos el pin 9 como salida.
+}
+
+void loop()
+{
+  for (brightness = 0; brightness <= 255; brightness += 5) {  // Empezamos con brillo 0 (apagado) hasta 255 (brillo maximo).
+    analogWrite(9, brightness);  // La funcion analogWrite() permite escribir un valor analogo, o una onda PWM, en un pin.
+    delay(30); // Wait for 30 millisecond(s)
+  }
+  for (brightness = 255; brightness >= 0; brightness -= 5) {
+    analogWrite(9, brightness);
+    delay(30); // Wait for 30 millisecond(s)
+  }
+}
+```
+
+En este ejemplo estamos controlando el brillo de un LED mediante el uso de PWM donde empezamos con LED apagado (0) hasta endenderlo por completo (255) y luego apagamos usando el mismo metodo en reversa.[[Fuente](https://www.arduino.cc/reference/en/language/functions/analog-io/analogwrite/)]
+
+## Conclusión
+
 La técnica de PWM se utiliza en una variedad de aplicaciones, particularmente para el control. Ya sabes que puede usarse para atenuar los LED y controlar el ángulo de los servomotores, y ahora puedes comenzar a explorar otros posibles usos.
 
 En el siguiente video, podemos ver un LED RGB siendo controlado con PWM en un difusor:
 
+<div class="row justify-content-center">
+    <div class="col-md-6 offset-md-3">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/M9ySSC35E9Q?start=69" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+</div>
