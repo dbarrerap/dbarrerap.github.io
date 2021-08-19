@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
+        <title>Coding OverloadPython + PyQt5: Slots predeterminados</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        <meta name="description" content="En esta entrega vemos un tema mas avanzado para entender mejor como funcionan los widgets y alterar su comportamiento." />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-secondary bg-gradient mb-3">
+        <div class="container">
+            <a href="/" class="navbar-brand">Coding Overload</a>
+            <span class="navbar-text">Pushing buttons until it works...</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav">
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categorias
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li><a href="/category/programming.html" class="dropdown-item">Programming</a></li>
+                        </ul>
+                    </li>
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Social
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li>
+                                <a href="https://instagram.com/dbarrera.dev" class="dropdown-item">
+                                    <i class="bi bi-instagram"></i> Instagram
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/dbarrerap" class="dropdown-item">
+                                    <i class="bi bi-github"></i> Github
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container pb-5">
+<header class="mt-5 mb-3">
+    <h1>Python + PyQt5: Slots predeterminados</h1>
+<div class="alert alert-secondary text-muted">
+    Publicado: 2020/05/18
+    <br>Autores: David E. Barrera</div></header>
+<p>Hasta ahora hemos visto ciertos widgets y hemos declarado nuestro comportamiento de manera personalizada. Pero Qt no solo provee la apariencia física de los widgets, sino que también provee comportamientos, <code>slots</code>,  predeterminados.</p>
+<p>El manejo de eventos es un mecanismo importante en todas las aplicaciones. La aplicación no solo debe reconocer el evento, sino que también debe tomar la acción correspondiente para servir el evento. La acción tomada en cualquier evento determina el curso de la aplicación. Para mostrar esto, desarrollaremos una aplicacion que copie y pegue un texto de un campo de texto en otro.</p>
+<p>Esta guía te hará comprender cómo un evento realizado en un widget invoca una acción predefinida en el widget asociado. Debido a que queremos copiar el contenido de un widget <code>LineEdit</code> al hacer clic en el botón, necesitamos invocar el método <code>selectAll()</code> cuando se produce el evento <code>pressed()</code> en el botón. Además, necesitamos invocar el método <code>copy()</code> cuando se produce el evento <code>released()</code> en el botón. Para pegar el contenido en el portapapeles en otro widget de <code>LineEdit</code> al hacer clic en otro botón, necesitamos invocar el método <code>paste()</code> cuando ocurra el evento <code>clicked()</code> en otro botón.</p>
+<h2>Implementacion</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># view.py</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtWidgets</span>
+
+
+<span class="k">class</span> <span class="nc">CopyPaste</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">containerWidget</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">containerWidget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_1</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">containerWidget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rowWidget</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">row</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rowWidget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">copy</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rowWidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Copy&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">row</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">paste</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rowWidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">paste</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Paste&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">row</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paste</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rowWidget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_2</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">containerWidget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_2</span><span class="p">)</span>
+
+        <span class="n">parent</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">containerWidget</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Hasta aqui, nada nuevo. Una interfaz que contiene dos campos de texto y dos botones, uno para copiar y otro para pegar.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># controller.py</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QMainWindow</span>
+<span class="kn">from</span> <span class="nn">app</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="k">class</span> <span class="nc">Window</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span> <span class="o">=</span> <span class="n">CopyPaste</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">copy</span><span class="o">.</span><span class="n">pressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">input_1</span><span class="o">.</span><span class="n">selectAll</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">copy</span><span class="o">.</span><span class="n">released</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">input_1</span><span class="o">.</span><span class="n">copy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">paste</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">input_2</span><span class="o">.</span><span class="n">paste</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">Window</span><span class="p">()</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
+</code></pre></div>
+
+<p>Aqui podemos ver que conectamos las diferentes señales de los <code>QPushButton</code> (<code>pressed</code>, <code>released</code> y <code>clicked</code>) con los diferentes slots de los <code>QLineEdit</code> (<code>selectAll</code>, <code>copy</code>, <code>paste</code>). En la <a href="https://doc.qt.io/qt-5/qlineedit.html#public-slots">documentación</a> podemos ver todos los slots posibles para un QLineEdit. Consultar la documentación nos permite ver que podemos dearrollar nuestras aplicaciones de manera más rápida ya que podemos ver que cada widget tiene funcionalidad predeterminada, solo es de conectarse y hacer uso de ella.</p>
+<p>Con esto ya estamos listos para crear nuestro primer CRUD usando PyQt5. Pero eso en la siguiente entrega, hasta entonces!</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html>

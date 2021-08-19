@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
+        <title>Coding OverloadCifrado Cesar con Python + PyQt5</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        <meta name="description" content="En criptografía, el cifrado César, también conocido como cifrado por desplazamiento, código de César o desplazamiento de César, es una de las..." />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-secondary bg-gradient mb-3">
+        <div class="container">
+            <a href="/" class="navbar-brand">Coding Overload</a>
+            <span class="navbar-text">Pushing buttons until it works...</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav">
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categorias
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li><a href="/category/programming.html" class="dropdown-item">Programming</a></li>
+                        </ul>
+                    </li>
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Social
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li>
+                                <a href="https://instagram.com/dbarrera.dev" class="dropdown-item">
+                                    <i class="bi bi-instagram"></i> Instagram
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/dbarrerap" class="dropdown-item">
+                                    <i class="bi bi-github"></i> Github
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container pb-5">
+<header class="mt-5 mb-3">
+    <h1>Cifrado Cesar con Python + PyQt5</h1>
+<div class="alert alert-secondary text-muted">
+    Publicado: 2020/05/09
+    <br>Autores: David E. Barrera</div></header>
+<p>En criptografía, el cifrado César, también conocido como cifrado por desplazamiento, código de César o desplazamiento de César, es una de las técnicas decodificación más simples y más usadas. Es un tipo de cifrado por sustitución en el que una letra en el texto original es reemplazada por otra letra que se encuentra un número fijo de posiciones más adelante en el alfabeto.</p>
+<p>El cifrado César muchas veces puede formar parte de sistemas más complejos de codificación, como el cifrado Vigenère, e incluso tiene aplicación en el sistema ROT13. Como todos los cifrados de sustitución alfabética simple, el cifrado César se descifra con facilidad y en la práctica no ofrece mucha seguridad en la comunicación, pero si eres el primero en implementarlo en el mundo, es bastante seguro!</p>
+<p>Para estar claros, a continuación mostraré como encriptar el texto <code>CODING</code> con un desplazamiento de <code>1</code>.</p>
+<table class="table">
+    <thead>
+        <tr><th>texto</th><th>C</th><th>O</th><th>D</th><th>I</th><th>N</th><th>G</th></tr>
+    </thead>
+    <tbody>
+        <tr><th>desplazamiento</th><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+        <tr><th>cifrado</th><td>D</td><td>P</td><td>E</td><td>J</td><td>O</td><td>H</td></tr>
+    </tbody>
+</table>
+
+<p>De manera formal, si tenemos un texto <em>p</em>, <em>p<sub>i</sub></em> es el <em>i</em> caracter en <em>p</em>, y <em>k</em> siendo la clave (un numero no negativo), entonces cada letra <em>c<sub>i</sub></em> en el texto cifrado, <em>c</em>, se lo calcula de la siguiente manera:</p>
+<blockquote>
+<p><strong>c<sub>i</sub> = (p<sub>i</sub> + k) % 26</strong></p>
+</blockquote>
+<p>Donde <code>% 26</code> es el residuo de la división para 26. Quizá lo estoy complicando un poco más de lo necesario, pero es una manera precisa de plasmar el algoritmo.</p>
+<h2>Implementación</h2>
+<p>Vamos a escribir un programa llamado <code>cesar-qt.py</code> que nos permite encriptar un texto usando el cifrado César. Iniciemos entonces creando la interfaz del programa. Inicialmente necesitamos ingresar el texto plano, seleccionar un valor numérico y mostrar el texto cifrado.</p>
+<p>Usaremos el conocido sistema de filas y columnas, proveniente de <a href="https://getbootstrap.com/docs/4.4/layout/grid/">Bootstrap</a>, para ubicar nuestros widgets.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+
+
+<span class="k">class</span> <span class="nc">MainWindow</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">QMainWindow</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">&#39;Cifrado Cesar&#39;</span><span class="p">)</span>
+        <span class="n">center_widget</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+
+        <span class="c1"># Nuestra columna principal</span>
+        <span class="n">container</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">center_widget</span><span class="p">)</span>
+
+        <span class="c1"># Primera fila</span>
+        <span class="n">row_1</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+
+        <span class="c1"># Primera columna de la primera fila</span>
+        <span class="n">vbox_1</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">lbl_plaintext</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Texto plano&#39;</span><span class="p">)</span>
+        <span class="n">vbox_1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lbl_plaintext</span><span class="p">)</span>
+        <span class="n">txt_plaintext</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="n">txt_plaintext</span><span class="o">.</span><span class="n">setPlaceholderText</span><span class="p">(</span><span class="s1">&#39;Escriba un texto...&#39;</span><span class="p">)</span>
+        <span class="n">vbox_1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">txt_plaintext</span><span class="p">)</span>
+        <span class="n">vbox_1</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">)</span>
+        <span class="n">row_1</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">vbox_1</span><span class="p">)</span>
+
+        <span class="c1"># Segunda columna de la primera fila</span>
+        <span class="n">vbox_2</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">lbl_rotation</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Rotacion&#39;</span><span class="p">)</span>
+        <span class="n">vbox_2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lbl_rotation</span><span class="p">)</span>
+        <span class="n">cmb_values</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+        <span class="n">cmb_values</span><span class="o">.</span><span class="n">addItems</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">26</span><span class="p">)])</span>
+        <span class="n">vbox_2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">cmb_values</span><span class="p">)</span>
+        <span class="n">vbox_2</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">)</span>
+        <span class="n">row_1</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">vbox_2</span><span class="p">)</span>
+
+        <span class="c1"># Segunda fila</span>
+        <span class="n">row_2</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>  
+
+        <span class="c1"># Primera columna de la segunda fila</span>
+        <span class="n">vbox_3</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">lbl_ciphertext</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Texto cifrado&#39;</span><span class="p">)</span>
+        <span class="n">vbox_3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lbl_ciphertext</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">txt_ciphertext</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">txt_ciphertext</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">vbox_3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">txt_ciphertext</span><span class="p">)</span>
+        <span class="n">row_2</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">vbox_3</span><span class="p">)</span>
+
+        <span class="c1"># Agregamos las filas a nuesta columna principal</span>
+        <span class="n">container</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">row_1</span><span class="p">)</span>
+        <span class="n">container</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">row_2</span><span class="p">)</span>
+
+        <span class="c1"># Ubicamos el contenido en nuestra ventana</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="n">center_widget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">window</span> <span class="o">=</span> <span class="n">MainWindow</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
+</code></pre></div>
+
+<p>Donde obtendremos una ventana como la siguiente:</p>
+<div class="row"><div class="col-md-4 offset-md-4">
+<img src="/images/ScreenShot2020-05-09_1353.png" class="img-fluid">
+</div></div>
+
+<p>Es interesante ver esta línea <code>cmb_values.addItems([str(x) for x in range(1, 26)])</code>, aquí hacemos que Python cree para nosotros una lista de numeros del 1 al 25 usando una técnica llamada <code>list comprehension</code>. Por qué? En un abecedario internacional, tenemos 26 letras. Si usamos el número 26, le damos la vuelta al abecedario y es lo mismo que ingresar el numero 0, por lo cual no habría desplazamiento.</p>
+<p>Vamos a usar una señal de <code>QLineEdit</code> llamado <code>textChanged</code>, que detecta cada cambio en el campo de texto. De esta manera aplicaremos el cifrado cada vez que ingresemos una letra. Asimismo, usaremos la señal <code>currentIndexChanged</code> de <code>QComboBox</code> para realizar el mismo efecto cuando seleccionemos un nuevo valor de Rotacion. Pero primero crearemos el slot <code>caesar()</code> quien se encargará de realizar la encriptación.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MainWindow</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">caesar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">,</span> <span class="n">rotacion</span><span class="p">):</span>
+        <span class="n">cifrado</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">texto</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">rotacion</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">isupper</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">c</span> <span class="o">&lt;</span> <span class="mi">65</span> <span class="ow">or</span> <span class="mi">90</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">islower</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">c</span> <span class="o">&lt;</span> <span class="mi">97</span> <span class="ow">or</span> <span class="mi">122</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">)):</span>
+                        <span class="n">c</span> <span class="o">-=</span> <span class="mi">26</span>
+                    <span class="n">cifrado</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">cifrado</span> <span class="o">+=</span> <span class="n">p</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">txt_ciphertext</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">cifrado</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Repasemos lo que sucede. Por cada <em>p</em> del texto plano, chequeamos si es letra, pues solo aplicaremos el cifrado a letras del abecedario, no caracteres especiales (números o signos de puntuacion). Convertimos el caracter <em>p</em> en su valor ordenado (<code>ord()</code>), segun la tabla ascii, y le sumamos la clave para obtener el caracter <em>c</em> del cifrado. Luego chequeamos si el caracter cifrado esta dentro del rango del abecedario segun sus valores ascii (esto es <code>a</code> = 65, ..., <code>z</code> = 90, <code>A</code> = 97, ..., <code>Z</code> = 122), si esta fuera del rango, le restamos 26 (le damos la vuelta al diccionario, por asi decirlo) y lo agregamos al texto cifrado, conviertiendolo en letra (<code>chr()</code>).</p>
+<p>Si es un caracter especial, simplemente lo agregamos al texto cifrado sin convertirlo. Finalmente, mostramos el texto cifrado en el segundo campo de texto <code>txt_ciphertext</code>.</p>
+<p>A continuación, asociamos este método con las señales previamente mencionadas y tenemos nuestro programa de encriptación con cifrado César.</p>
+<h2>Código completo</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+
+
+<span class="k">class</span> <span class="nc">MainWindow</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">QMainWindow</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">&#39;Cifrado Cesar&#39;</span><span class="p">)</span>
+        <span class="n">center_widget</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+
+        <span class="n">container</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">center_widget</span><span class="p">)</span>
+
+        <span class="n">row_1</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>  
+
+        <span class="n">vbox_1</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">lbl_plaintext</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Texto plano&#39;</span><span class="p">)</span>
+        <span class="n">vbox_1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lbl_plaintext</span><span class="p">)</span>
+        <span class="n">txt_plaintext</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="n">txt_plaintext</span><span class="o">.</span><span class="n">setPlaceholderText</span><span class="p">(</span><span class="s1">&#39;Escriba un texto...&#39;</span><span class="p">)</span>
+        <span class="n">txt_plaintext</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">caesar</span><span class="p">(</span><span class="n">txt_plaintext</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">cmb_values</span><span class="o">.</span><span class="n">currentText</span><span class="p">()))</span>
+        <span class="n">vbox_1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">txt_plaintext</span><span class="p">)</span>
+        <span class="n">vbox_1</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">)</span>
+        <span class="n">row_1</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">vbox_1</span><span class="p">)</span>
+
+        <span class="n">vbox_2</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">lbl_rotation</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Rotacion&#39;</span><span class="p">)</span>
+        <span class="n">vbox_2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lbl_rotation</span><span class="p">)</span>
+        <span class="n">cmb_values</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+        <span class="n">cmb_values</span><span class="o">.</span><span class="n">addItems</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">26</span><span class="p">)])</span>
+        <span class="n">cmb_values</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">caesar</span><span class="p">(</span><span class="n">txt_plaintext</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">cmb_values</span><span class="o">.</span><span class="n">currentText</span><span class="p">()))</span>
+        <span class="n">vbox_2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">cmb_values</span><span class="p">)</span>
+        <span class="n">vbox_2</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">)</span>
+        <span class="n">row_1</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">vbox_2</span><span class="p">)</span>
+
+        <span class="n">row_2</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>  
+
+        <span class="n">vbox_3</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>  
+        <span class="n">lbl_ciphertext</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Texto cifrado&#39;</span><span class="p">)</span>
+        <span class="n">vbox_3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lbl_ciphertext</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">txt_ciphertext</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">txt_ciphertext</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">vbox_3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">txt_ciphertext</span><span class="p">)</span>
+        <span class="n">row_2</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">vbox_3</span><span class="p">)</span>
+
+        <span class="n">container</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">row_1</span><span class="p">)</span>
+        <span class="n">container</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">row_2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="n">center_widget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">caesar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">,</span> <span class="n">rotacion</span><span class="p">):</span>
+        <span class="n">cifrado</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">texto</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">rotacion</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">isupper</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">c</span> <span class="o">&lt;</span> <span class="mi">65</span> <span class="ow">or</span> <span class="mi">90</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">islower</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">c</span> <span class="o">&lt;</span> <span class="mi">97</span> <span class="ow">or</span> <span class="mi">122</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">)):</span>
+                        <span class="n">c</span> <span class="o">-=</span> <span class="mi">26</span>
+                    <span class="n">cifrado</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cifrado</span> <span class="o">+=</span> <span class="n">p</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">txt_ciphertext</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">cifrado</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">window</span> <span class="o">=</span> <span class="n">MainWindow</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
+</code></pre></div>
+
+<h2>Conclusión</h2>
+<p>Si, es posible que me esté obsesionando con PyQt5, pero después de años de haber usado Python en linea de comandos y ahora poder darle una interfaz gráfica es espectacular.</p>
+<p>Este programa de cifrado es uno de mis favoritos cuando estoy probando nuevas caracteristicas de un lenguaje de programación, ya que permite varias optimizaciones, bien sea por la implementacion del algoritmo o por la implementacion visual del programa.</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html>

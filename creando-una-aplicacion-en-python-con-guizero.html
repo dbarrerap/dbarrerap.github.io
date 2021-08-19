@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
+        <title>Coding OverloadCreando una aplicación en Python con guizero</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        <meta name="description" content="En este tutorial van a aprender a hacer una interfaz sencilla usando Python. A quien haya escrito aplicaciones en Python anteriormente, es..." />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-secondary bg-gradient mb-3">
+        <div class="container">
+            <a href="/" class="navbar-brand">Coding Overload</a>
+            <span class="navbar-text">Pushing buttons until it works...</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav">
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categorias
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li><a href="/category/programming.html" class="dropdown-item">Programming</a></li>
+                        </ul>
+                    </li>
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Social
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li>
+                                <a href="https://instagram.com/dbarrera.dev" class="dropdown-item">
+                                    <i class="bi bi-instagram"></i> Instagram
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/dbarrerap" class="dropdown-item">
+                                    <i class="bi bi-github"></i> Github
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container pb-5">
+<header class="mt-5 mb-3">
+    <h1>Creando una aplicaci&oacute;n en Python con guizero</h1>
+<div class="alert alert-secondary text-muted">
+    Publicado: 2020/05/03
+    <br>Autores: David E. Barrera</div></header>
+<p>En este tutorial van a aprender a hacer una interfaz sencilla usando Python.</p>
+<p>A quien haya escrito aplicaciones en Python anteriormente, es probable que en su mayor parte las entradas y salidas hayan sido de manera textual en una pantalla negra llamada <code>consola</code>. Añadir una interfaz grafica al programa ayuda al usuario a interactuar con ella mediante botones, menus, cuadros de texto y otros controles con los que el usuario final ya esta acostumbrado.</p>
+<h2>Libreria</h2>
+<p>Para este tutorial usaremos una nueva libreria llamada <a href="https://lawsie.github.io/guizero/"><code>guizero</code></a>. Esta libreria se puede instalar de varias maneras, mediante la descarga desde la pagina de ellos o mediante el administrador de paquetesde Python, <code>pip</code>.</p>
+<div class="highlight"><pre><span></span><code>$ pip3 install guizero
+</code></pre></div>
+
+<p>Python viene con <code>tkinter</code> instalado de manera predeterminada, pero a veces suele ser muy complejo su uso. El objetivo de <code>guizero</code> es justamente simplificar su uso.</p>
+<h2>Nuestra primera aplicación</h2>
+<p>Como es costumbre, iniciemos con un <code>Hola mundo!</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">guizero</span> <span class="kn">import</span> <span class="n">App</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Hola mundo!&#39;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Guardamos y ejecutamos. Deberia aparecer una pantalla en blanco con el titulo <code>Hola mundo!</code></p>
+<div class="row"><div class="col-md-4 offset-md-4">
+<img src="/assets/ScreenShot2020-05-02_1837.png">
+</div></div>
+
+<h2>Añadir widgets</h2>
+<p>Ahora, añadamos contenido a nuestra ventana. Los elementos, tales como texto, botones, cuadros de texto, se denominan <code>widgets</code>. Para hacer uso de ellos, debemos importarlos. Para esto, modificamos la linea de importación. Haremos esto a lo largo del presente tutorial.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">guizero</span> <span class="kn">import</span> <span class="n">App</span><span class="p">,</span> <span class="n">Text</span>
+</code></pre></div>
+
+<p>Todo el codigo que crea widgets debe ser escrito antes de la instrucción <code>app.display()</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">guizero</span> <span class="kn">import</span> <span class="n">App</span><span class="p">,</span> <span class="n">Text</span>
+<span class="c1"># Escribir el codigo que agrega widgets aqui</span>
+<span class="n">app</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</code></pre></div>
+
+<p>La linea <code>app.display()</code> inicia un bucle en el cual constantemente está esperando un clic en un boton o que algun cambio se haya dado, llamado <code>evento</code>, y automaticamente actualizar la pantalla respectivamente. Este bucle bloquea cualquier codigo que se escriba despues, pensar como un loop infinito.</p>
+<h3>Text</h3>
+<p>Probablemente es el widget mas comun y simple, lo que hace es mostrar un texto en la ventana.</p>
+<p>Agregar <code>Text</code> a la sentencia de importación y agregar el widget a la interfaz.</p>
+<div class="highlight"><pre><span></span><code><span class="n">mensaje</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Mi primera app&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Aqui hemos creado un widget Text con el nombre <code>mensaje</code>. El primer argumento le dice al widget quien es el elemento padre, en este caso la ventana principal, la cual habíamos creado anteriormente.</p>
+<div class="row"><div class="col-md-4 offset-md-4">
+<img src="/assets/ScreenShot2020-05-02_2158.png">
+</div></div>
+
+<p>Debería verse como en la imagen arriba. Notas que le dijimos al widget <code>Text</code> el texto a mostrar mediante <code>text='Mi primera app'</code>? Esto es denominado un <em>argumento clave</em>, porque se ha especificado la clave <code>text</code> y el valor, o mas bien texto, a mostrar. Existen otros argumentos clave, los cuales se pueden agregar separándolos por comas.</p>
+<div class="highlight"><pre><span></span><code><span class="n">mensaje</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Mi primera app&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s2">&quot;Times New Roman&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#003b6f&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Leyendo <a href="https://lawsie.github.io/guizero/text/">la documentación</a>, podemos ver toda la lista de argumentos que pueden usarse, asi como sus posibles valores. En el ejemplo he usado <code>size</code> para el tamaño, <code>font</code> para la tipografia, la cual depende de la disponibilidad en el sistema, y por ultimo <code>color</code>, pero no todos los colores pueden ser definidos por su nombre por lo cual tambien acepta un color usando su valor en hexadecimal, como lo he hecho en el ejemplo.</p>
+<h3>TextBox</h3>
+<p>El widget TextBox es usado para que el usuario pueda ingresar datos (como el metodo <code>input()</code>). Agreguemos uno a nuestra aplicación.</p>
+<p>Agreguemos el widget a la sentencia de importación.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">guizero</span> <span class="kn">import</span> <span class="n">App</span><span class="p">,</span> <span class="n">Text</span><span class="p">,</span> <span class="n">TextBox</span>
+</code></pre></div>
+
+<p>Y ahora agregar el widget a la pantalla.</p>
+<div class="highlight"><pre><span></span><code><span class="n">nombre</span> <span class="o">=</span> <span class="n">TextBox</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Hay un argumento clave llamado <code>width</code> el cual permite hacer mas ancho en campo de entrada. Consultar la <a href="https://lawsie.github.io/guizero/textbox/">documentación</a> para ver los demas argumentos claves.</p>
+<h3>PushButton</h3>
+<p><code>PushButton</code> nos permite crear un boton. Cuando se presiona el boton, este llama a una función.</p>
+<p>Para su correcto funcionamiento, la función a llamar debe estar creada previo a la creación de los widgets.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">recibir_nombre</span><span class="p">():</span>
+    <span class="n">mensaje</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">nombre</span><span class="o">.</span><span class="n">value</span>
+</code></pre></div>
+
+<p>La propiedad <code>.value</code> nos permite obtener y establecer el valor del objeto.</p>
+<p>A continuación, agregamos <code>PushButton</code> a nuestra sentencia de importación. Ahora, agrega el siguiente codigo para agregar el boton a nuestra interfaz.</p>
+<div class="highlight"><pre><span></span><code><span class="n">actualizar_texto</span> <span class="o">=</span> <span class="n">PushButton</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">recibir_nombre</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Escribir mi nombre&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>El primer argumento le dice al boton quien es su elemento padre, esto es común entre todos los widgets. A continuación usamos argumentos clave: <code>command</code> le dice al boton cual función ejecutar cuando se presiona y <code>text</code> es el texto a mostrar en el boton. Guardamos y ejecutamos. Escribimos nuestro nombre en el campo de texto y presionamos el boton.</p>
+<div class="row"><div class="col-md-4 offset-md-4">
+<img src="/assets/ScreenShot2020-05-03_1215.png">
+</div></div>
+
+<p>Como ven en el ejemplo, al presionar el boton, se actualiza el texto con el texto escrito.</p>
+<h3>Slider</h3>
+<p>Un <code>Slider</code>, o deslizador, nos permite escoger facilmente un valor dentro de un rango de valores, como un deslizador de volumen.</p>
+<p>Asi como el boton, debemos crear la función que es llamada al mover el deslizador previo a la creación del widget, esta función es llamada <code>callback</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cambiar_tamano</span><span class="p">(</span><span class="n">valor</span><span class="p">):</span>
+    <span class="n">mensaje</span><span class="o">.</span><span class="n">text_size</span> <span class="o">=</span> <span class="n">valor</span>
+</code></pre></div>
+
+<p>Esta función tiene un parametro llamado <code>valor</code>. Cuando el deslizador se mueva, el valor seleccionado es transmitido a la función <code>cambiar_tamano()</code> el cual recibe este valor. El codigo de la función lo que hace es cambiar el tamano del widget <code>Text</code> de acuerdo al valor del deslizador.</p>
+<p>A continuacion, agregamos el <code>Slider</code> a la sentencia de importación y agregamos el widget a la interfaz.</p>
+<div class="highlight"><pre><span></span><code><span class="n">tamano</span> <span class="o">=</span> <span class="n">Slider</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">cambiar_tamano</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+</code></pre></div>
+
+<p>La función <code>cambiar_tamano()</code> es llamado cada vez que el deslizador se mueve. El rango esta dado entre los valores de <code>start</code> y <code>end</code>, el valor minimo y maximo, respectivamente. Guardamos y ejecutamos. Como podras ver, el widget <code>Text</code> ahora tiene el valor seleccionado en el <code>Slider</code>, y si movemos este ultimo, el tamaño del texto se actualiza de acorde al valor en el deslizador.</p>
+<h3>Picture</h3>
+<p>El widget <code>Picture</code> nos permite incluir imagenes a nuestra aplicacion. Dependiendo del sistema operativo, diferentes formatos son soportados. De manera predeterminada los formatos aceptados son PNG y GIF, excepto en macOS en el cual solo GIF es soportado. Para agregar soporte a imagenes JPG, GIF animados, entre otros, debemos instalar <code>guizero[images]</code>.</p>
+<div class="highlight"><pre><span></span><code>$ pip3 install guizero<span class="o">[</span>images<span class="o">]</span>
+</code></pre></div>
+
+<p>Muy bien, ahora pondremos una imagen junto a nuestra aplicación. Tambien puede estar en una sub-carpeta, en mi caso creare una carpeta llamada <code>imagenes</code> y pondre una imagen de un Raspberry Pi dentro.</p>
+<p>Ahora, agregamos <code>Picture</code> a la sentencia de importación y agregamos el widget a la interfaz.</p>
+<div class="highlight"><pre><span></span><code><span class="n">imagen</span> <span class="o">=</span> <span class="n">Picture</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="s1">&#39;imagenes/raspberry-pi.jpg&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">240</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Tambien se puede modificar el tamaño de la imagen usando los argumentos clave <code>width</code> y <code>height</code>. Consultar la <a href="https://lawsie.github.io/guizero/picture/">documentacion</a> para mas información.</p>
+<p>Al ejecutar el codigo, nuestra aplicación debe verse de la siguiente manera:</p>
+<div class="row"><div class="col-md-4 offset-md-4">
+<img src="/assets/ScreenShot2020-05-03_1501.png">
+</div></div>
+
+<h2>Codigo Completo</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">guizero</span> <span class="kn">import</span> <span class="n">App</span><span class="p">,</span> <span class="n">Text</span><span class="p">,</span> <span class="n">TextBox</span><span class="p">,</span> <span class="n">PushButton</span><span class="p">,</span> <span class="n">Slider</span><span class="p">,</span> <span class="n">Picture</span>
+
+<span class="k">def</span> <span class="nf">recibir_nombre</span><span class="p">():</span>
+    <span class="n">mensaje</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">nombre</span><span class="o">.</span><span class="n">value</span>
+
+<span class="k">def</span> <span class="nf">cambiar_tamano</span><span class="p">(</span><span class="n">valor</span><span class="p">):</span>
+    <span class="n">mensaje</span><span class="o">.</span><span class="n">text_size</span> <span class="o">=</span> <span class="n">valor</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Hola mundo!&#39;</span><span class="p">)</span>
+<span class="n">mensaje</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Mi primera app&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s1">&#39;Times New Roman&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#003b6f&quot;</span><span class="p">)</span>
+<span class="n">nombre</span> <span class="o">=</span> <span class="n">TextBox</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;32&quot;</span><span class="p">)</span>
+<span class="n">actualizar_texto</span> <span class="o">=</span> <span class="n">PushButton</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">recibir_nombre</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Escribir mi nombre&#39;</span><span class="p">)</span>
+<span class="n">tamano</span> <span class="o">=</span> <span class="n">Slider</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">cambiar_tamano</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">imagen</span> <span class="o">=</span> <span class="n">Picture</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="s1">&#39;imagenes/raspberry-pi.jpg&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">240</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</code></pre></div>
+
+<h2>Conclusion</h2>
+<p>En este tutorial hemos creado una aplicacion simple con ciertos elementos bastante comunes, como lo son las etiquetas (<code>Text</code>), entradas de texto (<code>TextBox</code>), botones (<code>PushButton</code>), deslizadores (<code>Slider</code>) e imagenes (<code>Picture</code>). En otra entrada haremos uso de controles un poco mas complejos como un menu, checkbox y radio button. </p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html>

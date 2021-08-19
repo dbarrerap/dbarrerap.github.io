@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
+        <title>Coding OverloadPython + PyQt5: Radio buttons</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        <meta name="description" content="En los últimos dias me encontré con un problema. Yo quería seguir con mi sistema de layout usando QHBoxLayout y QVBoxLayout a manera de filas y..." />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-secondary bg-gradient mb-3">
+        <div class="container">
+            <a href="/" class="navbar-brand">Coding Overload</a>
+            <span class="navbar-text">Pushing buttons until it works...</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav">
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categorias
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li><a href="/category/programming.html" class="dropdown-item">Programming</a></li>
+                        </ul>
+                    </li>
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Social
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li>
+                                <a href="https://instagram.com/dbarrera.dev" class="dropdown-item">
+                                    <i class="bi bi-instagram"></i> Instagram
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/dbarrerap" class="dropdown-item">
+                                    <i class="bi bi-github"></i> Github
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container pb-5">
+<header class="mt-5 mb-3">
+    <h1>Python + PyQt5: Radio buttons</h1>
+<div class="alert alert-secondary text-muted">
+    Publicado: 2020/05/15
+    <br>Autores: David E. Barrera</div></header>
+<p>En los últimos dias me encontré con un problema. Yo quería seguir con mi sistema de layout usando <code>QHBoxLayout</code> y <code>QVBoxLayout</code> a manera de filas y columnas, pero al intentar hacer una aplicación con <code>QRadioButton</code>, esos que te permiten escoger una sola opcion, me encontre con un problema: Agrupacion.</p>
+<h2>Agrupación</h2>
+<p>Un QRadioButton permite escoger una sola opción de una cantidad <em>n</em> de opciones. Pero qué sucede cuando en la aplicación debo escoger de varios grupos? Por ejemplo un grupo es para Tallas y otro de Pagos, haciendo de ejemplo una aplicación que nos permita comprar ropa. Si estos Radio Buttons no son agrupados, puedo escoger una talla, pero ninguna forma de pago o una forma de pago pero ninguna talla. Esto no es correcto.</p>
+<p>Por qué sucede esto? Porque para agrupar los Radio Buttons, estos deben ser hijos de un <code>QWidget</code> padre, y este Widget padre no puede ser un Layout o la ventana como tal. Ok, comprensible. Por lo cual mi estructura de widgets en la aplicación debería ser de la siguiente manera:</p>
+<div class="highlight"><pre><span></span><code><span class="n">QMainWindow</span>  <span class="o">&lt;-</span> <span class="n">Esta</span> <span class="n">ventana</span> <span class="n">de</span> <span class="n">por</span> <span class="n">si</span> <span class="n">es</span> <span class="n">un</span> <span class="n">Widget</span>
+<span class="o">|</span>
+<span class="o">|-</span> <span class="n">QHBoxLayout</span>  <span class="o">&lt;-</span> <span class="n">Este</span> <span class="n">se</span> <span class="n">convierte</span> <span class="n">en</span> <span class="n">el</span> <span class="n">Layout</span> <span class="n">del</span> <span class="n">Widget</span> <span class="n">padre</span><span class="p">,</span> <span class="n">no</span> <span class="n">es</span> <span class="n">un</span> <span class="n">Widget</span>
+    <span class="o">|</span>
+    <span class="o">|-</span> <span class="n">QWidget</span>  <span class="o">&lt;-</span> <span class="n">Tecnicamente</span><span class="p">,</span> <span class="n">este</span> <span class="n">es</span> <span class="n">el</span> <span class="n">widget</span> <span class="n">hijo</span> <span class="n">de</span> <span class="n">QMainWindow</span>
+    <span class="o">|</span>    <span class="o">|</span>
+    <span class="o">|</span>    <span class="o">|-</span> <span class="n">QVBoxLayout</span>
+    <span class="o">|</span>        <span class="o">|</span>
+    <span class="o">|</span>        <span class="o">|-</span> <span class="n">QRadioButton</span>  <span class="o">&lt;-</span> <span class="n">Ellos</span> <span class="n">son</span> <span class="n">hijos</span> <span class="n">del</span> <span class="n">QWidget</span> <span class="n">anterior</span>
+    <span class="o">|</span>        <span class="o">|-</span> <span class="n">QRadioButton</span>
+    <span class="o">|</span>        <span class="o">|-</span> <span class="n">QRadioButton</span>
+    <span class="o">|</span>        <span class="o">|-</span> <span class="n">QRadioButton</span>
+    <span class="o">|</span>
+    <span class="o">|-</span> <span class="n">QWidget</span>
+        <span class="o">|</span>
+        <span class="o">|-</span> <span class="n">QVBoxLayout</span>
+            <span class="o">|</span>
+            <span class="o">|-</span> <span class="n">QRadioButton</span>
+            <span class="o">|-</span> <span class="n">QRadioButton</span>
+            <span class="o">|-</span> <span class="n">QRadioButton</span>
+</code></pre></div>
+
+<p>Aquí usamos un QWidget base como agrupador de varios QRadioButton. Esto nos permitirá hacer una selección única de dos grupos de Radio Buttons.</p>
+<h2>Implementación</h2>
+<p>Pues veamos como se escribe la estructura de nuestra Vista.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># view.py</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtWidgets</span>
+
+
+<span class="k">class</span> <span class="nc">TwoGroups</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">containerWidget</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">containerWidget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalWidget</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">row</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizontalWidget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">columnWidget</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizontalWidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columnWidget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">radio_s</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QRadioButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columnWidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radio_s</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Small&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radio_s</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radio_s</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">radio_m</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QRadioButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columnWidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radio_m</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Medium&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radio_m</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">radio_l</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QRadioButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columnWidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radio_l</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Large&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radio_l</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">row</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columnWidget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">columnWidget_2</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizontalWidget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column_2</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columnWidget_2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">radio_card</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QRadioButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columnWidget_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radio_card</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Debit/Credit Card&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radio_card</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column_2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radio_card</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">radio_transfer</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QRadioButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columnWidget_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radio_transfer</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Bank Transfer&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column_2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radio_transfer</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">row</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columnWidget_2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizontalWidget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_selected</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QLabel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lbl_selected</span><span class="p">)</span>
+
+        <span class="n">parent</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">containerWidget</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Y el Controlador se mantiene simple.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># controller.py </span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QMainWindow</span>
+<span class="kn">from</span> <span class="nn">view</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="k">class</span> <span class="nc">Window</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span> <span class="o">=</span> <span class="n">TwoGroups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radio_s</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selections</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radio_m</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selections</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radio_l</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selections</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radio_card</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selections</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radio_transfer</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selections</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">selections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radio_s</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="s1">&#39;Small&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radio_m</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="s1">&#39;Medium&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radio_l</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="s1">&#39;Large&#39;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radio_card</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="n">payment</span> <span class="o">=</span> <span class="s1">&#39;Debit/Credit Card&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radio_transfer</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="n">payment</span> <span class="o">=</span> <span class="s1">&#39;Bank Transfer&#39;</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Selected size is </span><span class="si">{}</span><span class="s1"> and payment method is </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">payment</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lbl_selected</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">Window</span><span class="p">()</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
+</code></pre></div>
+
+<p>Cuando cambia el estado de un QRadioButton, <code>toggled</code>, el programa chequea el estado, <code>isChecked()</code>, de cada grupo de Radio Buttons y muestra un mensaje de acuerdo a la talla y forma de pago seleccionada.</p>
+<p>Eso es todo por hoy. En la proxima entrega les contare acerca de <code>slots</code> predefinidos, métodos que vienen con los widgets y que nos permitirán escribir aplicaciones de manera más sencilla.</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html>

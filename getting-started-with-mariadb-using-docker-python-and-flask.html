@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
+        <title>Coding OverloadGetting started with MariaDB using Docker, Python and Flask</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        <meta name="description" content="I've written this short walkthrough to provide a boilerplate for greater applications using MariaDB (a drop-in replacement of MySQL) with Docker..." />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-secondary bg-gradient mb-3">
+        <div class="container">
+            <a href="/" class="navbar-brand">Coding Overload</a>
+            <span class="navbar-text">Pushing buttons until it works...</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav">
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categorias
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li><a href="/category/programming.html" class="dropdown-item">Programming</a></li>
+                        </ul>
+                    </li>
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Social
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li>
+                                <a href="https://instagram.com/dbarrera.dev" class="dropdown-item">
+                                    <i class="bi bi-instagram"></i> Instagram
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/dbarrerap" class="dropdown-item">
+                                    <i class="bi bi-github"></i> Github
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container pb-5">
+<header class="mt-5 mb-3">
+    <h1>Getting started with MariaDB using Docker, Python and Flask</h1>
+<div class="alert alert-secondary text-muted">
+    Publicado: 2020/04/27
+    <br>Autores: David E. Barrera</div></header>
+<p>I've written this short walkthrough to provide a boilerplate for greater applications using MariaDB (a drop-in replacement of MySQL) with Docker and Python (with the help of Flask). This is my first English post, so pardon my French.</p>
+<h2>Docker? What and why?</h2>
+<p>Sometimes we want to install a specific version of MariaDB on a certain system, but no packages are available. Or maybe, we simply want to isolate MariaDB from the rest of the system, to be sure that we won't cause any damage.</p>
+<p>A virtual machine would certainly serve the scope. However, this means installing a system on the top of another system. It requires a lot of resources.</p>
+<p>In many cases, the best solution is Docker. Docker is a framework that runs containers. A container is meant to run a specific daemon, and the software that is needed for that daemon to properly work. Docker does not virtualize a whole system; a container only includes the packages that are not included in the underlying system.</p>
+<p>Docker requires a very small amount of resources. It can run on a virtualized system. It is used both in development and in production environments. <a href="https://mariadb.com/kb/en/installing-and-using-mariadb-via-docker/">Source</a></p>
+<h2>Flask</h2>
+<p>Flask is a micro web framework written in Python. It is classified as a microframework because it does not require particular tools or libraries. </p>
+<h2>Installing necessary software</h2>
+<ol>
+<li>Install <a href="https://www.docker.com/products/docker-desktop">Docker</a> following their instructions according to your system.</li>
+<li>Download and install <a href="https://www.python.org/downloads/">Python</a>.</li>
+</ol>
+<h2>Prepare environment</h2>
+<h3>Docker + MySQL</h3>
+<p>Open a terminal window and run the following command:</p>
+<div class="highlight"><pre><span></span><code>$ docker run -p <span class="m">3306</span>:3306 --name mariadb -e <span class="nv">MARIADB_ROOT_PASSWORD</span><span class="o">=</span>S0m3P4ssw0rd! mariadb/server:10.4
+</code></pre></div>
+
+<p>The previous command will spin up a MariaDB Server container that you can connect to and communicate with using a MariaDB client. If you're running macOS, like me, you can install <code>mysql-client</code> from Homebrew.</p>
+<p>Connect to your MariaDB instance by executing the following command in a terminal window.</p>
+<div class="highlight"><pre><span></span><code>$ mysql -h <span class="m">127</span>.0.0.1 -u root -p
+</code></pre></div>
+
+<p>Enter the password set up with the Docker. You should see something like this.</p>
+<div class="row"><div class="col-md-6 offset-md-3">
+<img src="/assets/ScreenShot20200426_1458.png" alt="Screenshot - MySQL" class="img-fluid">
+</div></div>
+
+<p>Now, create the database.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">mydb</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Create a new table.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">mydb</span><span class="p">.</span><span class="k">user</span> <span class="p">(</span><span class="n">name</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">32</span><span class="p">));</span>
+</code></pre></div>
+
+<p>Now, insert new records.</p>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">mydb</span><span class="p">.</span><span class="k">user</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">&#39;David&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Paula&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Gabriela&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Andres&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+<p>We are done with the databse for now.</p>
+<h3>Python + Flask</h3>
+<p>For this, I'll create a virtual environment.</p>
+<div class="highlight"><pre><span></span><code>$ python3 -m venv venv
+$ <span class="nb">source</span> venv/bin/activate
+</code></pre></div>
+
+<p>And now let's install Flask.</p>
+<div class="highlight"><pre><span></span><code>$ pip install flask 
+</code></pre></div>
+
+<p>Let's check if everything goes according to plan. Create a file called <code>app.py</code> and write the following</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s1">&#39;Hello world&#39;</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+
+<p>You're ready to test your <code>Hello world</code> web application.</p>
+<div class="highlight"><pre><span></span><code>$ python3 app.py
+</code></pre></div>
+
+<p>Now open your browser and go to <code>http://localhost:5000</code>. It should say <strong>Hello world</strong>. If it doesn't, leave a comment below with your error and I'll do my best to help you out.</p>
+<p>Now let's continue by installing the dependencies.</p>
+<div class="highlight"><pre><span></span><code>$ pip install flask-sqlachemy pymysql
+</code></pre></div>
+
+<p><strong>Flask-SQLAlchemy</strong> is an extension for Flask that adds support for SQLAlchemy to your application. It aims to simplify using SQLAlchemy with Flask by providing useful defaults and extra helpers that make it easier to accomplish common tasks.</p>
+<p><strong>PyMySQL</strong> is a pure-Python MySQL client library, based on PEP 249. We will use this as our connector to the database.</p>
+<p>Now let's add to our code.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">flask_sqlalchemy</span> <span class="kn">import</span> <span class="n">SQLAlchemy</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SQLALCHEMY_DATABASE_URI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;mysql+pymysql://</span><span class="si">{DB_USERNAME}</span><span class="s1">:</span><span class="si">{DB_PASSWORD}</span><span class="s1">@localhost:3306/</span><span class="si">{DB_NAME}</span><span class="s1">&#39;</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s1">&#39;Hello world&#39;</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Replace <code>{DB_USERNAME}</code>, <code>{DB_PASSWORD}</code>, and <code>{DB_NAME}</code> with the respective data. Now, we have two ways to access the data: <em>Reflect</em>, which has read-only access, and <em>Automap</em>, which allows us to have read-write access. We'll be using the latter.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">flask_sqlalchemy</span> <span class="kn">import</span> <span class="n">SQLAlchemy</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.automap</span> <span class="kn">import</span> <span class="n">automap_base</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SQLALCHEMY_DATABASE_URI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;mysql+pymysql://</span><span class="si">{DB_USERNAME}</span><span class="s1">:</span><span class="si">{DB_PASSWORD}</span><span class="s1">@localhost:3306/</span><span class="si">{DB_NAME}</span><span class="s1">&#39;</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+<span class="n">Base</span> <span class="o">=</span> <span class="n">automap_base</span><span class="p">()</span>
+<span class="n">Base</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">engine</span><span class="p">,</span> <span class="n">reflect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="p">{</span><span class="n">NAME</span><span class="p">}</span> <span class="o">=</span> <span class="n">Base</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="p">{</span><span class="n">TABLE_NAME</span><span class="p">}</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s1">&#39;Hello world&#39;</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Where <code>{NAME}</code> is a name we give to the database's <code>{TABLE_NAME}</code>. So, for our database that we set up previously, the code would be like this.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">flask_sqlalchemy</span> <span class="kn">import</span> <span class="n">SQLAlchemy</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.automap</span> <span class="kn">import</span> <span class="n">automap_base</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SQLALCHEMY_DATABASE_URI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;mysql+pymysql://root:S0m3P4ssw0rd!@localhost:3306/mydb&#39;</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+<span class="n">Base</span> <span class="o">=</span> <span class="n">automap_base</span><span class="p">()</span>
+<span class="n">Base</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">engine</span><span class="p">,</span> <span class="n">reflect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">Users</span> <span class="o">=</span> <span class="n">Base</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">user</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Users</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;Hello world&#39;</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+
+<p>The new code does the following:</p>
+<ul>
+<li><strong>users = db.session.query(Users).all()</strong> queries the table and fetches all the records.</li>
+<li><strong>print(user.name)</strong>, as we iterate over every record in the table, we can access the columns as properties of the object <code>User</code>.</li>
+</ul>
+<p>In order to return all the properties from the object we'll use the <code>vars()</code> method. Let's modify the <code>index()</code> method like this.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Users</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+
+<p>We create a dictionary object called <code>data</code> which we will populate with all the properties of the <code>User</code> object and now our web application shows this data on the browser, as a string. Let's convert this into a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON">JSON</a> object, by importing the JSON module. Then we'll use the <code>dumps()</code> method to show it as a response. The final code is the following.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">flask_sqlalchemy</span> <span class="kn">import</span> <span class="n">SQLAlchemy</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.automap</span> <span class="kn">import</span> <span class="n">automap_base</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SQLALCHEMY_DATABASE_URI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;mysql+pymysql://root:S0m3P4ssw0rd!@localhost:3306/mydb&#39;</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+<span class="n">Base</span> <span class="o">=</span> <span class="n">automap_base</span><span class="p">()</span>
+<span class="n">Base</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">engine</span><span class="p">,</span> <span class="n">reflect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">Users</span> <span class="o">=</span> <span class="n">Base</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">user</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="n">users</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Users</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+
+<h2>This is (NOT) the end.</h2>
+<p>Hopefully this short walkthrough has helped you get started using MariaDB with Docker, Python and Flask. And, yes, this was a very simple example, but it only gets more exciting from here!</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html>

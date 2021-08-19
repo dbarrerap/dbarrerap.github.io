@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
+        <title>Coding OverloadDart: Una introduccion</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        <meta name="description" content="Una pequeña introduccion al lenguaje Dart antes de usar su framework Flutter para el desarrollo de aplicaciones moviles." />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-secondary bg-gradient mb-3">
+        <div class="container">
+            <a href="/" class="navbar-brand">Coding Overload</a>
+            <span class="navbar-text">Pushing buttons until it works...</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav">
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categorias
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li><a href="/category/programming.html" class="dropdown-item">Programming</a></li>
+                        </ul>
+                    </li>
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Social
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li>
+                                <a href="https://instagram.com/dbarrera.dev" class="dropdown-item">
+                                    <i class="bi bi-instagram"></i> Instagram
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/dbarrerap" class="dropdown-item">
+                                    <i class="bi bi-github"></i> Github
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container pb-5">
+<header class="mt-5 mb-3">
+    <h1>Dart: Una introduccion</h1>
+<div class="alert alert-secondary text-muted">
+    Publicado: 2020/06/07
+    <br>Autores: David E. Barrera</div></header>
+<p>Mucho se viene hablando de un framework multiplataforma para dispositivos moviles, Flutter. Pero todo framework esta basado en algun lenguaje de programacion. Laravel con PHP, Django con Python, Rails para Ruby. Asimismo, el lenguaje de programacion de FLutter es <strong>Dart</strong>.</p>
+<p>Dart es un lenguaje de programacion desarollado por Google y presentado al mundo en el 2011. El objetivo de Dart, al ser multiplataforma, es dar una alternativa mas moderna al desarrollo de aplicaciones web. Actualmente esta en la version estable es <code>2.8.4</code>. Esta influenciado por otros lenguajes como C, C#, Java, JavaScript, Kotlin, Ruby, Strongtalk, TypeScript y Erlang.</p>
+<h2>Instalacion</h2>
+<p>Dependiendo del sistema operativo, existen diferentes metodos de instalacion. Yo tengo una Mac. Sigue <a href="https://dart.dev/get-dart">este enlace</a> para consultar el metodo de instalacion de tu sistema operativo.</p>
+<p>Para instalar Dart, se debe tener <a href="https://brew.sh/">Homebrew</a> instalado previamente.</p>
+<div class="highlight"><pre><span></span><code>$ brew tap dart-lang/dart
+<span class="o">==</span>&gt; Tapping dart-lang/dart
+Cloning into <span class="s1">&#39;/usr/local/Homebrew/Library/Taps/dart-lang/homebrew-dart&#39;</span>...
+
+$ brew install dart
+</code></pre></div>
+
+<h2>Hola, mundo!</h2>
+<p>Como es usual en una guia de uso de lenguajes de programacion, hagamos un <code>Hola, mundo!</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Este es un comentario</span>
+<span class="kt">void</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">print</span><span class="p">(</span><span class="s1">&#39;Hola, mundo!&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Guardamos esto en un archivo, yo lo llamare <code>hello.dart</code>. Para ejecutarlo, abrimos una terminal (Simbolo de Sistema en Windows) y corremos <code>dart hello.dart -c</code></p>
+<div class="highlight"><pre><span></span><code>$ dart hello.dart -c
+Hola, mundo!
+$
+</code></pre></div>
+
+<p>Como podemos ver, su estructura es similar a la del lenguaje C, ya que requiere una funcion de entrada llamada <code>main()</code> la cual indica donde la aplicacion debe comenzar. Para mayor informacion, consultar la <a href="https://dart.dev/guides/language/language-tour#the-main-function">documentacion</a>.</p>
+<h2>Variables y Funciones</h2>
+<p>Muy bien, ya sabemos como mostrar informacion al mundo. Ahora pidamos informacion y respondamos acorde. En nuestro siguiente ejemplo pediremos el nombre del usuario y mostraremos un saludo.</p>
+<div class="highlight"><pre><span></span><code><span class="k">import</span> <span class="s1">&#39;dart:io&#39;</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">print</span><span class="p">(</span><span class="s1">&#39;Cual es tu nombre?&#39;</span><span class="p">);</span>
+    <span class="kt">String</span> <span class="n">nombre</span> <span class="o">=</span> <span class="n">stdin</span><span class="p">.</span><span class="n">readLineSync</span><span class="p">();</span>
+    <span class="n">saludar</span><span class="p">(</span><span class="n">nombre</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">saludar</span><span class="p">(</span><span class="kt">String</span> <span class="n">usuario</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">print</span><span class="p">(</span><span class="s1">&#39;Hola, </span><span class="si">$</span><span class="n">usuario</span><span class="s1">!&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Revisemos este ejemplo:</p>
+<ul>
+<li>Para poder interactuar con el usuario, necesitamos una libreria <a href="https://dart.dev/articles/libraries/dart-io">dart:io</a>, la cual importamos en la parte superior de nuestra aplicacion.</li>
+<li>Dentro del metodo <code>main()</code>, declaramos una nueva variable del tipo <code>String</code> llamado <code>nombre</code>. <code>stdin.readLineSync()</code> nos permite leer la entrada o respuesta del usuario desde la linea de comandos.</li>
+<li>A continuacion, llamamos a una nueva funcion llamada <code>saludar()</code> enviandole como argumento el nombre que recibimos en el paso anterior.</li>
+<li>La funcion <code>saludar()</code> acepta como parametro un objeto del tipo String, el cual llamamos <code>usuario</code> y lo que hace es imprimir un saludo, usando la tecnica de <em>[interpolacion]</em>(https://dart.dev/guides/language/language-tour#strings).</li>
+</ul>
+<p>Al ejecutar la aplicacion, deberiamos ver algo como esto:</p>
+<div class="highlight"><pre><span></span><code>$ dart hello.dart -c
+Cual es tu nombre?
+David
+Hola, David!
+$
+</code></pre></div>
+
+<h2>Otros datos basicos</h2>
+<p>Dart tiene 7 <a href="https://dart.dev/guides/language/language-tour#built-in-types">tipos de datos</a>. Veamos un ejemplo con un programa que calcula la cantidad minima de monedas a usar para cierta cantidad a devolver:</p>
+<div class="highlight"><pre><span></span><code><span class="k">import</span> <span class="s1">&#39;dart:io&#39;</span><span class="p">;</span>
+
+
+<span class="kt">void</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">double</span> <span class="n">monto</span><span class="p">;</span>
+    <span class="k">do</span> <span class="p">{</span>
+      <span class="n">print</span><span class="p">(</span><span class="s1">&#39;Cual es el valor a devolver?&#39;</span><span class="p">);</span>
+      <span class="n">monto</span> <span class="o">=</span> <span class="kt">double</span><span class="p">.</span><span class="n">tryParse</span><span class="p">(</span><span class="n">stdin</span><span class="p">.</span><span class="n">readLineSync</span><span class="p">());</span>  <span class="c1">// Convertir de string a double</span>
+    <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">monto</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">monto</span> <span class="o">&lt;</span> <span class="m">0</span><span class="p">);</span>  <span class="c1">// Repetir el bloque mientras una de estas condiciones sea cierta</span>
+
+    <span class="c1">// Eliminar posibles valores inherentes de los double</span>
+    <span class="kt">int</span> <span class="n">monto_int</span> <span class="o">=</span> <span class="p">(</span><span class="n">monto</span> <span class="o">*</span> <span class="m">100</span><span class="p">).</span><span class="n">round</span><span class="p">();</span>
+
+    <span class="kt">int</span> <span class="n">monedas</span> <span class="o">=</span> <span class="m">0</span><span class="p">;</span>
+
+    <span class="c1">// 25 centavos</span>
+    <span class="n">monedas</span> <span class="o">+=</span> <span class="n">monto_int</span> <span class="o">~/</span> <span class="m">25</span><span class="p">;</span>  <span class="c1">// Division entera</span>
+    <span class="n">monto_int</span> <span class="o">=</span> <span class="n">monto_int</span> <span class="o">%</span> <span class="m">25</span><span class="p">;</span>  <span class="c1">// Calculamos el residuo</span>
+
+    <span class="c1">// 10 centavos</span>
+    <span class="n">monedas</span> <span class="o">+=</span> <span class="n">monto_int</span> <span class="o">~/</span> <span class="m">10</span><span class="p">;</span>
+    <span class="n">monto_int</span> <span class="o">=</span> <span class="n">monto_int</span> <span class="o">%</span> <span class="m">10</span><span class="p">;</span>
+
+    <span class="c1">// 5 centavos</span>
+    <span class="n">monedas</span> <span class="o">+=</span> <span class="n">monto_int</span> <span class="o">~/</span> <span class="m">5</span><span class="p">;</span>
+    <span class="n">monto_int</span> <span class="o">=</span> <span class="n">monto_int</span> <span class="o">%</span> <span class="m">5</span><span class="p">;</span>
+
+    <span class="c1">// 1</span>
+    <span class="n">monedas</span> <span class="o">+=</span> <span class="n">monto_int</span><span class="p">;</span>
+
+    <span class="n">print</span><span class="p">(</span><span class="s1">&#39;Se devuelven </span><span class="si">$</span><span class="n">monedas</span><span class="s1"> monedas.&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>En este ejemplo tenemos muchas cosas. Hemos usado dos tipos de datos numericos, <code>int</code> y <code>double</code>, para numeros enteros y decimales respectivamente. Tambien hemos usado un nuevo metodo, <code>double.tryParse()</code>, lo que hace es intentar convertir en un double el argumento, de no poderlo lograr devuelve <code>null</code>. </p>
+<p>Tambien tenemos una <a href="https://dart.dev/guides/language/language-tour#control-flow-statements">estructura de control</a>, la que chequea si monto es null o un valor menor a 0. De ser verdadera una de estas condiciones, repite el bloque de codigo interna, de lo contrario sigue con la ejecucion normal del programa.</p>
+<p>Continuando con el codigo, convertimos el valor ingresado en un numero entero. Usamos el metodo <code>round()</code> para descartar la parte decimal. Tambien usamos operadores matematicos, <code>~/</code> para que nos devuelva la parte entera de la division y <code>%</code> para que nos devuelva el residuo de esa division.</p>
+<h2>Clases</h2>
+<p>Podemos crear nuestra propia estructura de datos mediante el uso de clases. Vamos con el ejemplo:</p>
+<div class="highlight"><pre><span></span><code><span class="k">import</span> <span class="s1">&#39;dart:math&#39;</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">Point</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">_x</span><span class="p">,</span> <span class="n">_y</span><span class="p">;</span>
+
+  <span class="n">Point</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">_x</span> <span class="o">=</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">_y</span> <span class="o">=</span> <span class="m">0</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">Point</span><span class="p">.</span><span class="n">withCoords</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kt">int</span> <span class="n">getX</span><span class="p">()</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">_x</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">getY</span><span class="p">()</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">_y</span><span class="p">;</span>
+
+  <span class="kt">void</span> <span class="n">setX</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kt">double</span> <span class="n">distance</span><span class="p">(</span><span class="n">Point</span> <span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x_diff</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="n">_x</span> <span class="o">-</span> <span class="n">other</span><span class="p">.</span><span class="n">_x</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">y_diff</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="n">_y</span> <span class="o">-</span> <span class="n">other</span><span class="p">.</span><span class="n">_y</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">x_diff</span> <span class="o">*</span> <span class="n">x_diff</span> <span class="o">+</span> <span class="n">y_diff</span> <span class="o">*</span> <span class="n">y_diff</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nd">@override</span>
+  <span class="kt">String</span> <span class="n">toString</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s2">&quot;(</span><span class="si">$</span><span class="n">_x</span><span class="s2">, </span><span class="si">$</span><span class="n">_y</span><span class="s2">)&quot;</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Point</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">();</span>
+    <span class="n">Point</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">Point</span><span class="p">.</span><span class="n">withCoords</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">3</span><span class="p">);</span>
+
+    <span class="n">print</span><span class="p">(</span><span class="n">p1</span><span class="p">);</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">p2</span><span class="p">);</span>
+
+    <span class="n">print</span><span class="p">(</span><span class="n">p1</span><span class="p">.</span><span class="n">distance</span><span class="p">(</span><span class="n">p2</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>En este ejemplo he creado una clase llamada <code>Point</code> que representa un punto en el espacio y tiene coordenadas en el eje <code>x</code> y <code>y</code>. Como buena practica, las propiedades de una clase deben ser privadas, en Dart eso se logra usando el guion bajo, <code>_</code> en el nombre de la propiedad. Esto puede ser usado tambien en los metodos. </p>
+<p>Dart, a diferencia de otros lenguajes de programacion, no soporta la sobre carga de metodos, pero nos ofrece otras facilidades. Por ejemplo, no podemos tener varios constructores <em>sin nombre</em>, pero nos permite crear constructores que tengan un nombre distinto, por asi decirlo. En el ejemplo tenemos el constructor predeterminado, <code>Point()</code> y otro constructor con nombre, <code>Point.withCoords()</code>, el cual acepta valores para los ejes.</p>
+<p>A continuacion creamos un metodo, <code>distance()</code> el cual usando el <a href="https://www.montereyinstitute.org/courses/DevelopmentalMath/TEXTGROUP-1-8_RESOURCE/U07_L1_T4_text_final_es.html">Teorema de Pitagoras</a>, nos devuelve la distancia entre un punto y otro. Para usar ciertas funciones matematicas, como el calculo de la raiz cuadrada, hacemos uso de la libreria <code>dart:math</code>;</p>
+<p>Finalmente, sobreescribimos el metodo <code>toString()</code>, cuyo objetivo es devolver una representacion del objeto creado. De no hacer esto, al imprimir los puntos, <code>print(p1);</code>, nos devuelve que es una instancia de Point, <code>Instance of 'Point'</code>. No es muy explicativo. Usando nuestra version de <code>toString()</code> es mas clara, pues nos devuelve el par ordenado que representa su posicion en el espacio.</p>
+<h2>Conclusion</h2>
+<p>Este es un primer acercamiento al lenguaje Dart. Como pueden ver, no es muy diferente a otros lenguajes de programacion como <code>Java</code> o <code>C</code>. Tambien tiene ciertas facilidades como <code>closure</code>, tecnica tambien llamada expresion <code>lambda</code>, inspirado de JavaScript. Pero como siempre menciono, si manejas un lenguaje orientado a objetos, los manejas todos, solo es de aprender sus reglas de sintaxis, los cuales la mayoria son iguales. </p>
+<p>Es Dart el lenguaje del futuro? Solo puedo decir lo siguiente: es un lenguaje avanzado para su época y sin duda es un lenguaje muy agradable.</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
+        <title>Coding OverloadPython + PyQt: Separando la logica de la interfaz</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        <meta name="description" content="Bienvenidos a una nueva guía de creación de programas usando Python y PyQt5. Hasta ahora, hemos realizado programas sencillos que realizan una o..." />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-secondary bg-gradient mb-3">
+        <div class="container">
+            <a href="/" class="navbar-brand">Coding Overload</a>
+            <span class="navbar-text">Pushing buttons until it works...</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav">
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categorias
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li><a href="/category/programming.html" class="dropdown-item">Programming</a></li>
+                        </ul>
+                    </li>
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Social
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li>
+                                <a href="https://instagram.com/dbarrera.dev" class="dropdown-item">
+                                    <i class="bi bi-instagram"></i> Instagram
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/dbarrerap" class="dropdown-item">
+                                    <i class="bi bi-github"></i> Github
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container pb-5">
+<header class="mt-5 mb-3">
+    <h1>Python + PyQt: Separando la logica de la interfaz</h1>
+<div class="alert alert-secondary text-muted">
+    Publicado: 2020/05/10
+    <br>Autores: David E. Barrera</div></header>
+<p>Bienvenidos a una nueva guía de creación de programas usando Python y PyQt5. Hasta ahora, hemos realizado programas sencillos que realizan una o dos operaciones. Hemos revisado varios componentes y sus señales (eventos), usando estos últimos para asociarlos con un comportamiento usando slots (callbacks) generado por nosotros mismos. El problema radica en que todo (la lógica y la interfaz) esta metido en un solo archivo. Esto, en el mundo de la programación, no es muy bien visto. Hoy vamos a conocer como resolver ese problema.</p>
+<h2>MVC</h2>
+<p>El MVC, Model-View-Controller o Modelo-Vista-Controlador, es un patrón de diseño de software que propone separar el código de un programa de acuerdo a sus responsabilidades. Este patrón de diseño se urge ser utilizada en sistemas donde se requiere el uso de interfaces de usuario. Además, permite la creación de "software más robusto con un ciclo de vida más adecuado, donde se potencie la facilidad de mantenimiento, reutilización del código y la separación de conceptos". Para más información, sigue <a href="https://desarrolloweb.com/articulos/que-es-mvc.html">este enlace</a>.</p>
+<h2>Implementación</h2>
+<p>Realicemos un programa sencillo para explicar como funciona.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># demo_ui.py</span>
+<span class="c1"># Generado por Qt Designer</span>
+
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span>
+
+
+<span class="k">class</span> <span class="nc">Ui_Dialog</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Dialog</span><span class="p">):</span>
+        <span class="n">Dialog</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;Dialog&quot;</span><span class="p">)</span>
+        <span class="n">Dialog</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">283</span><span class="p">,</span> <span class="mi">166</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_clickme</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="n">Dialog</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_clickme</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QRect</span><span class="p">(</span><span class="mi">130</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">113</span><span class="p">,</span> <span class="mi">32</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_clickme</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;btn_clickme&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_label</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="n">Dialog</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_label</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QRect</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_label</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;lbl_label&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">txt_name</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">(</span><span class="n">Dialog</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">txt_name</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QRect</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">201</span><span class="p">,</span> <span class="mi">21</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">txt_name</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;txt_name&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_name</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="n">Dialog</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_name</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QRect</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_name</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;lbl_name&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">retranslateUi</span><span class="p">(</span><span class="n">Dialog</span><span class="p">)</span>
+        <span class="n">QtCore</span><span class="o">.</span><span class="n">QMetaObject</span><span class="o">.</span><span class="n">connectSlotsByName</span><span class="p">(</span><span class="n">Dialog</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">retranslateUi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Dialog</span><span class="p">):</span>
+        <span class="n">_translate</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QCoreApplication</span><span class="o">.</span><span class="n">translate</span>
+        <span class="n">Dialog</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="n">_translate</span><span class="p">(</span><span class="s2">&quot;Dialog&quot;</span><span class="p">,</span> <span class="s2">&quot;Dialog&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_clickme</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">_translate</span><span class="p">(</span><span class="s2">&quot;Dialog&quot;</span><span class="p">,</span> <span class="s2">&quot;Haz clic!&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">_translate</span><span class="p">(</span><span class="s2">&quot;Dialog&quot;</span><span class="p">,</span> <span class="s2">&quot;Escriba su nombre&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_name</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">_translate</span><span class="p">(</span><span class="s2">&quot;Dialog&quot;</span><span class="p">,</span> <span class="s2">&quot;TextLabel&quot;</span><span class="p">))</span>
+</code></pre></div>
+
+<p>Esta interfaz fue realizada en Qt Designer, del cual hablaré en otra entrada. Por ahora analicemos lo que tenemos, que no es muy diferente a lo que ya hemos hecho en entradas anteriores. Tenemos la clase <code>Ui_Dialog</code> que representa una ventana de dialogo. Existen dos métodos, <code>setupUi</code> el cual se encarga de crear y ubicar los widgets de la interfaz. Podemos ver que este recibe un argumento, el cual es un widget de alto nivel (<code>Dialog</code> en este caso) y todos los widgets creados son hijos de este. El método <code>retranslateUi</code> permite la traduccion de la interfaz en diferentes idiomas.</p>
+<p>Junto a este archivo, crearemos otro llamado <code>demo_controller.py</code> el cual brindará funcionalidad a la interfaz.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># demo_controller.py</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QDialog</span><span class="p">,</span> <span class="n">QApplication</span>
+<span class="kn">from</span> <span class="nn">demo_ui</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="k">class</span> <span class="nc">MiFormulario</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span> <span class="o">=</span> <span class="n">Ui_Dialog</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">btn_clickme</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mostrar_mensaje</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">mostrar_mensaje</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lbl_name</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Hola, </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">txt_name</span><span class="o">.</span><span class="n">text</span><span class="p">()))</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">MiFormulario</span><span class="p">()</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
+</code></pre></div>
+
+<p>Veamos este codigo a profundidad. </p>
+<ul>
+<li>Hago la importación de módulos necesarios. <code>QtWidgets</code> es la base de todos los objetos para la interfaz de usuario.</li>
+<li>Creo una nueva clase, <code>MiFormulario</code> que hereda de la clase base <code>QDialog</code>.</li>
+<li>Genero el método constructor predeterminado (<code>__init__</code>) para <code>QDialog</code>.</li>
+<li>El manejo de eventos en PyQt5 usa signals (eventos) y slots (callbacks), como lo he mencionado antes. Cuando se presiona un boton, el evento <code>clicked</code> se genera. El método <code>connect</code> conecta un evento con un método, un slot, un callback, en nuestro caso <code>mostrar_mensaje</code>. El bucle de manejo de eventos espera a que un evento ocurra para realizar una tarea. Este sigue funcionando hasta que se llame a <code>exit()</code> o el widget principal sea destruido (se cierre la ventana).</li>
+<li>Se crea un objeto del tipo <code>QApplication</code>, que es la aplicacion como tal. Este objeto recibe como parametro <code>sys.argv</code> el cual contiene parametros o atributos enviados via linea de comandos.</li>
+<li>Se crea una instancia de <code>MiFormulario</code> con el nombre <code>w</code>.</li>
+<li>Usamos el método <code>show()</code> para mostrar la ventana en pantalla.</li>
+<li><code>mostrar_mensaje()</code> es la tarea a realizar cuando el usuario hace clic en el boton. En este caso, muestra el texto 'Hola' junto al nombre que haya escrito el usuario en el campo <code>txt_name</code>.</li>
+<li><code>sys.exit()</code> asegura que, al cerrar la ventana, se liberen los recursos de la memoria.</li>
+</ul>
+<h2>Conclusión</h2>
+<p>Segun Gamma et al. "<strong>MVC</strong> consta de tres tipos de objetos. El <em>Modelo</em> es el objeto de la aplicación, la <em>Vista</em> es su presentación en pantalla y el <em>Controlador</em> define la forma en que la interfaz de usuario reacciona a la entrada del usuario. Antes de MVC, los diseños de interfaz de usuario tendían a agrupar estos objetos. MVC los desacopla para aumentar la flexibilidad y la reutilización."</p>
+<p>En otras palabras, el componente modelo se encarga de mantener la persistencia de los datos, guardando o recuperando la información independiente de medio utilizado. La vista representa los componentes que muestran la interfaz de la aplicación, mostrando la información obtenida a partir del modelo, de manera que el usuario pueda visualizarla. Finalmente, el controlador representa los componentes que se encargan de la interacción del usuario, actuando de intermediario entre el usuario, el modelo y la vista. El controlador recoge las peticiones del usuario, interacciona con el modelo y finalmente selecciona que vista es la adecuada para mostrar los datos en cuestión.</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html>

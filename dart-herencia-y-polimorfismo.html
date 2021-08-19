@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
+        <title>Coding OverloadDart: Herencia y Polimorfismo</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        <meta name="description" content="Continuando con el lenguaje Dart, esta vez vemos conceptos mas profundos del paradigma de Programacion Orientada a objetos." />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-secondary bg-gradient mb-3">
+        <div class="container">
+            <a href="/" class="navbar-brand">Coding Overload</a>
+            <span class="navbar-text">Pushing buttons until it works...</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav">
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categorias
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li><a href="/category/programming.html" class="dropdown-item">Programming</a></li>
+                        </ul>
+                    </li>
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Social
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li>
+                                <a href="https://instagram.com/dbarrera.dev" class="dropdown-item">
+                                    <i class="bi bi-instagram"></i> Instagram
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/dbarrerap" class="dropdown-item">
+                                    <i class="bi bi-github"></i> Github
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container pb-5">
+<header class="mt-5 mb-3">
+    <h1>Dart: Herencia y Polimorfismo</h1>
+<div class="alert alert-secondary text-muted">
+    Publicado: 2020/06/08
+    <br>Autores: David E. Barrera</div></header>
+<p>En la entrega anterior habia mencionado que Dart toma inspiracion en ciertas facilidades de otros lenguajes, asi tambien su estructura y que la diferencia radica en la sintaxis del lenguaje. Siendo asi, sería bueno revisar la sintaxis de Dart para tener claridad al leer y escribir codigo.</p>
+<h2>Clases</h2>
+<p>Algo hay que tener en claro: de manera implicita, toda clase hereda de una clase base llamada <code>Object</code>. Pero, que sucede si deseo heredar de una clase que uno mismo haya escrito? Declaremos una clase base, <code>Circle</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">import</span> <span class="s1">&#39;dart:math&#39;</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">Circle</span> <span class="p">{</span>
+  <span class="kt">double</span> <span class="n">_radius</span><span class="p">;</span>
+  <span class="kt">String</span> <span class="n">_color</span><span class="p">;</span>
+
+  <span class="n">Circle</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">_radius</span> <span class="o">=</span> <span class="m">1.0</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">_color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">Circle</span><span class="p">.</span><span class="n">withRadius</span><span class="p">(</span><span class="kt">double</span> <span class="n">r</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">_radius</span> <span class="o">=</span> <span class="n">r</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">Circle</span><span class="p">.</span><span class="n">withRadiusColor</span><span class="p">(</span><span class="kt">double</span> <span class="n">r</span><span class="p">,</span> <span class="kt">String</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">_radius</span> <span class="o">=</span> <span class="n">r</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kt">double</span> <span class="kd">get</span> <span class="n">radius</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">_radius</span><span class="p">;</span>
+  <span class="kt">String</span> <span class="kd">get</span> <span class="n">color</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">_color</span><span class="p">;</span>
+  <span class="kd">set</span> <span class="n">radius</span><span class="p">(</span><span class="kt">double</span> <span class="n">r</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">_radius</span> <span class="o">=</span> <span class="n">r</span><span class="p">;</span>
+  <span class="kd">set</span> <span class="n">color</span><span class="p">(</span><span class="kt">String</span> <span class="n">c</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+
+  <span class="kt">String</span> <span class="n">toString</span><span class="p">()</span> <span class="o">=&gt;</span> <span class="s1">&#39;Circle[radius=</span><span class="si">$</span><span class="n">_radius</span><span class="s1">, color=</span><span class="si">$</span><span class="n">_color</span><span class="s1">]&#39;</span><span class="p">;</span>
+  <span class="kt">double</span> <span class="n">area</span><span class="p">()</span> <span class="o">=&gt;</span> <span class="kt">double</span><span class="p">.</span><span class="n">tryParse</span><span class="p">((</span><span class="n">pi</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="n">_radius</span><span class="p">,</span> <span class="m">2</span><span class="p">)).</span><span class="n">toStringAsFixed</span><span class="p">(</span><span class="m">2</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Como habia mencionado antes, no podemos sobrecargar el constructor o un método, pero podemos asignarle un nombre y esto lo hace diferente.</p>
+<p>Tambien podemos ver que los métodos accesores (getters y setters), los podemos resumir un poco mas y podemos usarlos como si fueran las mismas propiedades del objeto instanciado.</p>
+<p>Finalmente sobreescribimos el comportamiento del método <code>toString()</code>, el cual nos responde con una representacion escrita del objeto, y un método <code>area()</code> el cual nos devuelve el area del circulo. Aqui vemos que usamos la funcion <code>pow()</code> que viene de la libreria <code>dart:math</code>, el cual nos eleva cierto valor a cierta potencia, en nuestro caso el radio al exponente 2, al cuadrado. Tambien encadenamos el método <code>.toStringAsFixed()</code> el cual nos ayuda a <em>truncar</em> el valor decimal a 2 cifras significativas.</p>
+<h2>Herencia</h2>
+<p>Muy bien, ya tenemos nuestra clase base. Ahora crearemos la subclase.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">class</span> <span class="nc">Cylinder</span> <span class="kd">extends</span> <span class="n">Circle</span> <span class="p">{</span>
+  <span class="kt">double</span> <span class="n">_height</span><span class="p">;</span>
+
+  <span class="n">Cylinder</span><span class="p">()</span> <span class="o">:</span> <span class="k">super</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">_height</span> <span class="o">=</span> <span class="m">1.0</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">Cylinder</span><span class="p">.</span><span class="n">withHeight</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">_height</span><span class="p">)</span> <span class="o">:</span> <span class="k">super</span><span class="p">();</span>
+
+  <span class="n">Cylinder</span><span class="p">.</span><span class="n">withHeightRadius</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">_height</span><span class="p">,</span> <span class="kt">double</span> <span class="n">r</span><span class="p">)</span> <span class="o">:</span> <span class="k">super</span><span class="p">.</span><span class="n">withRadius</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>
+
+  <span class="n">Cylinder</span><span class="p">.</span><span class="n">withHeightRadiusColor</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">_height</span><span class="p">,</span> <span class="kt">double</span> <span class="n">r</span><span class="p">,</span> <span class="kt">String</span> <span class="n">c</span><span class="p">)</span> <span class="o">:</span> <span class="k">super</span><span class="p">.</span><span class="n">withRadiusColor</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
+
+  <span class="kt">double</span> <span class="kd">get</span> <span class="n">height</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">_height</span><span class="p">;</span>
+  <span class="kd">set</span> <span class="n">height</span><span class="p">(</span><span class="kt">double</span> <span class="n">h</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">_height</span> <span class="o">=</span> <span class="n">h</span><span class="p">;</span>
+
+  <span class="c1">// String toString() =&gt; &#39;Cylinder[base=${super.toString()}, height=$_height]&#39;;</span>
+  <span class="kt">double</span> <span class="n">volume</span><span class="p">()</span> <span class="o">=&gt;</span> <span class="kt">double</span><span class="p">.</span><span class="n">tryParse</span><span class="p">((</span><span class="n">area</span><span class="p">()</span> <span class="o">*</span> <span class="n">_height</span><span class="p">).</span><span class="n">toStringAsFixed</span><span class="p">(</span><span class="m">2</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Para crear una subclase, <em>extendemos</em> de la clase base mediante el uso de la palabra clave <code>extends</code>. De esta manera tenemos acceso a todas las caracteristicas ya implementadas en la clase base.</p>
+<p>Cada constructor llama a su constructor base mediante <code>: super()</code> llamado al constructor correspondiente y enviando los argumentos de ser necesarios.</p>
+<p>He dejado comentado el método <code>toString()</code> para hacer una prueba rapida, la cual veremos a continuación.</p>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Cylinder</span> <span class="n">cyl1</span> <span class="o">=</span> <span class="n">Cylinder</span><span class="p">();</span>
+  <span class="n">print</span><span class="p">(</span><span class="n">cyl1</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Al mostrar la información del cilindro, nos muestra la información del circulo base. Obviamente es incompleto o erroneo, depende de como lo quieran ver. Si descomentamos esta línea y volvemos a ejecutar nuestro programa, nos devuelve una información mas detallada como la que presento a continuación:</p>
+<div class="highlight"><pre><span></span><code>$ dart cylinder.dart -c
+Cylinder<span class="o">[</span><span class="nv">base</span><span class="o">=</span>Circle<span class="o">[</span><span class="nv">radius</span><span class="o">=</span><span class="m">1</span>.0, <span class="nv">color</span><span class="o">=</span>red<span class="o">]</span>, <span class="nv">height</span><span class="o">=</span><span class="m">1</span>.0<span class="o">]</span>
+$
+</code></pre></div>
+
+<p>Algo muy particular es que, aunque Dart es un lenguaje bastante declarativo, le cuesta averiguar ciertas cosas. Por ejemplo el uso de <code>super</code> para obtener el resultado del método del mismo nombre de la clase base, es por esto que debemos llamar al método del cual queremos que nos responda, por eso se llama a <code>super.toString()</code>, para que nos responda el método <code>toString()</code> de la clase base.</p>
+<p>Usemos uno de los otros constructores para tener claro su funcionamiento:</p>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Cylinder</span> <span class="n">cyl1</span> <span class="o">=</span> <span class="n">Cylinder</span><span class="p">();</span>
+  <span class="n">print</span><span class="p">(</span><span class="n">cyl1</span><span class="p">);</span>
+  <span class="n">Cylinder</span> <span class="n">cyl2</span> <span class="o">=</span> <span class="n">Cylinder</span><span class="p">.</span><span class="n">withHeightRadius</span><span class="p">(</span><span class="m">5.0</span><span class="p">,</span> <span class="m">2.0</span><span class="p">);</span>
+  <span class="n">print</span><span class="p">(</span><span class="n">cyl2</span><span class="p">);</span>
+  <span class="n">print</span><span class="p">(</span><span class="s1">&#39;area: </span><span class="si">${</span><span class="n">cyl2</span><span class="p">.</span><span class="n">area</span><span class="p">()</span><span class="si">}</span><span class="s1">, volumen: </span><span class="si">${</span><span class="n">cyl2</span><span class="p">.</span><span class="n">volumen</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>El cual nos responde:</p>
+<div class="highlight"><pre><span></span><code>$ dart cylinder.dart -c
+Cylinder<span class="o">[</span><span class="nv">base</span><span class="o">=</span>Circle<span class="o">[</span><span class="nv">radius</span><span class="o">=</span><span class="m">1</span>.0, <span class="nv">color</span><span class="o">=</span>red<span class="o">]</span>, <span class="nv">height</span><span class="o">=</span><span class="m">1</span>.0<span class="o">]</span>
+Cylinder<span class="o">[</span><span class="nv">base</span><span class="o">=</span>Circle<span class="o">[</span><span class="nv">radius</span><span class="o">=</span><span class="m">2</span>.0, <span class="nv">color</span><span class="o">=</span>red<span class="o">]</span>, <span class="nv">height</span><span class="o">=</span><span class="m">5</span>.0<span class="o">]</span>
+area: <span class="m">12</span>.57, volumen: <span class="m">62</span>.85
+$
+</code></pre></div>
+
+<p>Aqui podemos ver que nos devuelve la informacion del segundo cilindro y el valor del <em>area base</em> y el <em>volumen</em>.</p>
+<h2>Conclusion</h2>
+<p>Como dije, cada lenguaje tiene sus detalles en cuanto a la sintaxis (como se escribe) y la semántica (significado de lo escrito). Hoy revisamos el como llamar el constructor y un método de la clase base desde una subclase.</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html>
