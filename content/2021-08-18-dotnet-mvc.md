@@ -4,6 +4,7 @@ date: 2021-08-18
 slug: dotnetcore-mvc-1
 category: programming
 tags: dotnet core, asp.net, mvc, web development, web application, c sharp, c#
+summary: Una guia para la creacion de una aplicacion web usando .NET Core/EF y SQLite.
 ---
 
 En esta pequeña guia, vamos a crear una pequeña aplicacion web usando la arquitectura MVC en ASP.NET Core,

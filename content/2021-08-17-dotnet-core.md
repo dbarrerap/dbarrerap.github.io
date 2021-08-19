@@ -3,6 +3,8 @@ title: Creando una aplicacion ASP.NET Core MVC
 date: 2021-08-17
 category: programming
 tags: dotnet core, asp.net, mvc, web development, web application, c sharp, c#
+slug: intro-dotnetcore
+summary: En este articulo hablo acerca de las nuevas tecnologias de Microsoft en su camino por el codigo abierto.
 ---
 Vuelvo una vez mas con un nuevo tutorial de una nueva tecnologia! No soy yo si no logro
 aprender un nuevo lenguaje de programacion. Esta vez hablaremos de **.Net Core**.
