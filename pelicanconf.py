@@ -29,10 +29,11 @@ AUTHOR_FEED_RSS = None
 SOCIAL = (('Instagram', 'https://instagram.com/dbarrera.dev'),
           ('Github', 'https://github.com/dbarrerap'),)
 
-DEFAULT_PAGINATION = 10
+DEFAULT_PAGINATION = 5
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
 
 STATIC_PATHS = ['images']
 DEFAULT_CATEGORY = 'Undefined'
+THEME = './theme/co_theme'

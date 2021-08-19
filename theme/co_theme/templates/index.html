@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content_title %}{% endblock %}
+{% block content %}
+
+{% if articles %}
+    {% for article in articles_page.object_list %}
+        {# First item #}
+        {% if loop.first and not articles_page.has_previous() %}
+            <div class="row">
+                <div class="p-5 mb-4 bg-light rounded-3">
+                    <div class="container-fluid py-5">
+                        <h3 class="display-5 fw-bold">
+                            <a href="{{ SITEURL }}/{{ article.url }}" class="text-decoration-none">{{ article.title }}</a>
+                        </h3>
+                        <p class="col-md-8 fs-4">{{ article.summary }}</p>
+                    </div>
+                </div>
+            </div>
+            {% if loop.length > 1 %}
+            <h3>Otros articulos</h3>
+            <hr>
+            <div class="row rows-col-1 rows-cols-md-3 g-3 mb-3">
+
+            {% endif %}
+        {% else %}
+            {% if loop.first %}
+            <div class="row rows-col-1 rows-cols-md-3 g-3 mb-3">
+            {% endif %}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h4 class="card-title"><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h4>
+                            <p class="card-text">{{ article.summary }}</p>
+                            <!--<a href="{{ SITEURL }}/{{ article.url }}" class="btn btn-outline-primary">Seguir leyendo...</a>-->
+                        </div>
+                        <div class="card-footer"><a href="{{ SITEURL }}/{{ article.url }}" class="text-decoration-none">Seguir leyendo...</a></div>
+                    </div>
+                </div>
+            {% if loop.last %}
+                {% if loop.length > 1 or articles_page.has_other_pages() %}
+            </div>
+                    {% if articles_page.has_other_pages() %}
+                        {% include 'pagination.html' %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% else %}
+<h2>No content has been added.</h2>
+{% endif %}
+{% endblock content %}

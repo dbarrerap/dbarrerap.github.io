@@ -1,0 +1,7 @@
+<div class="alert alert-secondary text-muted">
+    Publicado: {{ article.date | strftime('%Y/%m/%d') }}
+    {% if article.modified %}<br>Actualizado: {{ article.modified | strftime('%Y/%m/%d') }}{% endif %}
+    {% if article.authors %}
+    <br>Autores: {% for author in article.authors %}{{ author }}{% endfor %}
+    {% endif %}
+</div>
