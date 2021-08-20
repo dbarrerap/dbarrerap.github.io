@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="generator" content="Pelican" />
+        <title>Coding OverloadCrear una aplicacion de chat en tiempo real usando Flask y SocketIO.</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        <meta name="description" content="Siempre que leo o escucho de Python y servicios web todos hablan de Django. Mostremos que Flask tambien tiene lo suyo creando una aplicacion de..." />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-secondary bg-gradient mb-3">
+        <div class="container">
+            <a href="/" class="navbar-brand">Coding Overload</a>
+            <span class="navbar-text">Pushing buttons until it works...</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav">
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categorias
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li><a href="https://dbarrerap.github.io/category/programming.html" class="dropdown-item">Programming</a></li>
+                        </ul>
+                    </li>
+<li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Social
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarCategorias">
+                            <li>
+                                <a href="https://instagram.com/dbarrera.dev" class="dropdown-item">
+                                    <i class="bi bi-instagram"></i> Instagram
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/dbarrerap" class="dropdown-item">
+                                    <i class="bi bi-github"></i> Github
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container pb-5">
+<header class="mt-5 mb-3">
+    <h1>Crear una aplicacion de chat en tiempo real usando Flask y SocketIO.</h1>
+<div class="alert alert-secondary text-muted">
+    Publicado: 2020/08/20
+    <br>Autores: David E. Barrera</div></header>
+<h2>Flask</h2>
+<p>Flask es un <strong>micro</strong> Framework escrito en Python y desarrollado para simplificar y hacer más fácil la creación de Aplicaciones Web bajo el patron MVC.</p>
+<p>La palabra <em>micro</em> no quiere decir que se trate de un proyecto pequeño o que nos sirva para hacer páginas web pequeñas, al instalar Flask disponemos de las herramientas necesarias para crear una aplicacion web completamente funcional. Es probable que en algun momento se necesite una nueva funcionalidad que no se tiene de primeras con la instalacion, para eso encontraras un gran conjunto de plugins que se pueden instalar e integrar facilmente con Flask y que te permitiran añadirle todas las funcionalidades que necesites.</p>
+<p>En cuanto al patrón MVC, este es una forma de trabajar que permite diferenciar y separar lo que es la vista (la pagina HTML, lo que el usuario ve), el modelo de datos (los datos que va a manejar la aplicacion), y el controlador (donde se gestionan las peticiones de la app web y se lleva a cabo la logica).</p>
+<h2>Flask_SocketIO</h2>
+<h3>WebSocket</h3>
+<p>Websocket es un protocolo de comunicaciones que proporciona comunicación bidireccional full-duplex a través de una única conexión TCP.</p>
+<p>Para comprender Websockets, primero, debemos tener una comprensión clara del protocolo HTTP porque ambos van de la mano.</p>
+<p>HTTP es un protocolo que permite la obtención de recursos, como documentos HTML. Es la base de cualquier intercambio de datos en la Web y es un protocolo cliente-servidor, lo que significa que las solicitudes son iniciadas por el destinatario, generalmente el navegador Web.</p>
+<p>Para cada solicitud del navegador, el protocolo HTTP abrirá una conexión, se realiza el intercambio de datos y luego la conexión se cerrará.</p>
+<p>Si el requisito es obtener los datos continuamente del servidor, por ejemplo, obtener los datos en tiempo real para el intercambio de criptomonedas, la aplicación de juegos o una aplicación de chat, entonces habrá múltiples llamadas HTTP al servidor.</p>
+<p>En qué se diferencia Websocket de los protocolos HTTP tradicionales? Websockets usa comunicación bidireccional y la conexión no se interrumpirá hasta que el cliente o servidor decida terminar la conexión.</p>
+<p>Muy bien, ya sacado los tecnicismos del camino, comencemos con nuestra aplicacion web, una sala de chat.</p>
+<h3>Instalacion</h3>
+<p>Primero instalemos todas nuestras dependencias para ejecutar el proyecto. Yo estoy usando una Mac al momento de escribir esta guia, ajustar a su sistema operativo de acuerdo al caso.</p>
+<div class="highlight"><pre><span></span><code>$ python3 -m venv venv
+$ <span class="nb">source</span> venv/bin/activate
+$ pip install flask flask-socketio flask-migrate flask-script flask-sqlalchemy python-dotenv
+</code></pre></div>
+
+<ul>
+<li><strong>Flask</strong>: el framework</li>
+<li><strong>Flask-Migrate</strong>: Lo utilizaremos para hacer migraciones</li>
+<li><strong>Flask-Script</strong>: Junto a Flask-Migrate, nos ayudará a realizar migraciones por terminal</li>
+<li><strong>Flask-SocketIO</strong>: Con esta biblioteca conseguiremos realizar nuestro chat con WebSockets</li>
+<li><strong>Flask-SQLAlchemy</strong>: ORM que utilizaremos para guardar en nuestra base de datos el historial y poder cargarlo</li>
+<li><strong>python-dotenv</strong>: Manera sencilla de configurar nuestra aplicación</li>
+</ul>
+<p>Ahora debemos crear un archivo de configuracion <strong>.env</strong>. Esta separacion es una buena practica de seguridad.</p>
+<div class="highlight"><pre><span></span><code>SECRET_KEY=MiSecreto
+DEBUG=True
+DATABASE=&quot;sqlite:///MiAplicacion.db&quot;
+DOMAIN=127.0.0.1:5000
+</code></pre></div>
+
+<h3>Base de Datos (Modelo)</h3>
+<p>El objetivo de instalar SQLAlchemy y Migrate es lograr crear una base de datos donde se guardara un historial de chat.</p>
+<p>Creamos un archivo llamado <strong>models.py</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">flask_sqlalchemy</span> <span class="kn">import</span> <span class="n">SQLAlchemy</span>
+<span class="kn">from</span> <span class="nn">flask_script</span> <span class="kn">import</span> <span class="n">Manager</span>
+<span class="kn">from</span> <span class="nn">flask_migrate</span> <span class="kn">import</span> <span class="n">Migrate</span><span class="p">,</span> <span class="n">MigrateCommand</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">environ</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
+
+<span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1"># Settings</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SQLALCHEMY_DATABASE_URI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DATABASE&#39;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SQLALCHEMY_TRACK_MODIFICATIONS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Variables</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+<span class="n">migrate</span> <span class="o">=</span> <span class="n">Migrate</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">db</span><span class="p">)</span>
+<span class="n">manager</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+<span class="n">manager</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="s1">&#39;db&#39;</span><span class="p">,</span> <span class="n">MigrateCommand</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Chat</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Table chat</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;chat&#39;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">128</span><span class="p">))</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Text</span><span class="p">)</span>
+    <span class="n">created_at</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;Chat </span><span class="si">{0}</span><span class="s1">&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">manager</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Y ahora realizamos la migracion.</p>
+<div class="highlight"><pre><span></span><code>$ python3 models.py db init
+$ python3 models.py db migrate
+$ python3 models.py db upgrade
+</code></pre></div>
+
+<p>Se creara la base <em>MiAplicacion.db</em> con la tabla lista para guardar datos.</p>
+<h3>Logica de aplicacion (Controlador)</h3>
+<p>Creamos un archivo llamado <strong>app.py</strong> con el siguiente contenido:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">environ</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">render_template</span>
+<span class="kn">from</span> <span class="nn">flask_socketio</span> <span class="kn">import</span> <span class="n">SocketIO</span><span class="p">,</span> <span class="n">emit</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">db</span><span class="p">,</span> <span class="n">Chat</span>
+
+<span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1"># Configuracion</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SECRET_KEY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SECRET_KEY&#39;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;True&#39;</span> <span class="k">else</span> <span class="kc">False</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;PORT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">80</span>
+
+<span class="c1"># Socketio</span>
+<span class="n">DOMAIN</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DOMAIN&#39;</span><span class="p">)</span>
+<span class="n">socketio</span> <span class="o">=</span> <span class="n">SocketIO</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+<span class="c1"># Base de datos</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SQLALCHEMY_DATABASE_URI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DATABASE&#39;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+<span class="c1"># Cargamos la plantilla HTML con el frontend</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&lt;username&gt;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">open_chat</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="n">my_chat</span> <span class="o">=</span> <span class="n">Chat</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
+        <span class="s1">&#39;chat.html&#39;</span><span class="p">,</span>
+        <span class="n">domain</span><span class="o">=</span><span class="n">DOMAIN</span><span class="p">,</span>
+        <span class="n">chat</span><span class="o">=</span><span class="n">my_chat</span><span class="p">,</span>
+        <span class="n">username</span><span class="o">=</span><span class="n">username</span>
+    <span class="p">)</span>
+
+<span class="c1"># Recibirá los nuevos mensajes y los emitirá por socket</span>
+<span class="nd">@socketio</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s1">&#39;new_message&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">new_message</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="c1"># Emitimos el mensaje con el alias y el mensaje del usuario</span>
+    <span class="n">emit</span><span class="p">(</span><span class="s1">&#39;new_message&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+    <span class="p">},</span> <span class="n">broadcast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Salvamos el mensaje en la base de datos</span>
+    <span class="n">my_new_chat</span> <span class="o">=</span> <span class="n">Chat</span><span class="p">(</span>
+        <span class="n">username</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span>
+        <span class="n">text</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">my_new_chat</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+
+<span class="c1"># Iniciamos</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">socketio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</code></pre></div>
+
+<h2>Frontend (Vista)</h2>
+<p>Creamos la carpeta <em>templates</em> y dentro de ella el archivo <strong>chat.html</strong> con el siguiente contenido</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;es&quot;</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Chat<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;app&quot;</span><span class="p">&gt;</span>
+        <span class="c">&lt;!-- Renderizará los nuevos mensajes --&gt;</span>
+        <span class="p">&lt;</span><span class="nt">section</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">div</span> <span class="na">v-for</span><span class="o">=</span><span class="s">&quot;message in messages&quot;</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>@[[ message.username ]]<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>[[ message.text ]]<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">section</span><span class="p">&gt;</span>
+        <span class="c">&lt;!-- Formulario para introducir nuevos mensajes --&gt;</span>
+        <span class="p">&lt;</span><span class="nt">section</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">input</span> <span class="na">v-model</span><span class="o">=</span><span class="s">&quot;newMessage&quot;</span> <span class="err">@</span><span class="na">keypress</span><span class="err">.</span><span class="na">enter</span><span class="o">=</span><span class="s">&quot;sendMessage&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;Escribe un mensaje...&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&quot;sendMessage&quot;</span><span class="p">&gt;</span>Enviar<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">section</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="c">&lt;!-- Importamos socket.io --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.slim.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="c">&lt;!-- Importamos VueJS --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+        <span class="c1">// Conectamos con nuestro dominio</span>
+        <span class="kd">var</span> <span class="nx">socket</span> <span class="o">=</span> <span class="nx">io</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="s1">&#39;{{ domain }}&#39;</span><span class="p">);</span>
+        <span class="c1">// Instanciamos VueJS</span>
+        <span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">Vue</span><span class="p">({</span>
+            <span class="nx">el</span><span class="o">:</span> <span class="s2">&quot;#app&quot;</span><span class="p">,</span>
+            <span class="nx">delimiters</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;[[&#39;</span><span class="p">,</span> <span class="s1">&#39;]]&#39;</span><span class="p">],</span>
+            <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;{{ username }}&#39;</span><span class="p">,</span>
+                <span class="c1">// Le damos los mensajes del hitorial</span>
+                <span class="nx">messages</span><span class="o">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="nx">message</span> <span class="ow">in</span> <span class="nx">chat</span> <span class="o">%</span><span class="p">}</span>
+                    <span class="p">{</span>
+                        <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;{{ message.username }}&#39;</span><span class="p">,</span>
+                        <span class="nx">text</span><span class="o">:</span> <span class="s1">&#39;{{ message.text }}&#39;</span>
+                    <span class="p">}{</span><span class="o">%</span> <span class="k">if</span> <span class="nx">not</span> <span class="nx">loop</span><span class="p">.</span><span class="nx">last</span> <span class="o">%</span><span class="p">},{</span><span class="o">%</span> <span class="nx">endif</span> <span class="o">%</span><span class="p">}</span>
+                <span class="p">{</span><span class="o">%</span> <span class="nx">endfor</span> <span class="o">%</span><span class="p">}</span>
+                <span class="p">],</span>
+                <span class="nx">newMessage</span><span class="o">:</span> <span class="s1">&#39;&#39;</span>
+            <span class="p">},</span>
+            <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">sendMessage</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+                    <span class="c1">// Enviamos el nuevo mensaje</span>
+                    <span class="nx">socket</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;new_message&#39;</span><span class="p">,</span> <span class="p">{</span>
+                        <span class="nx">channel</span><span class="o">:</span> <span class="nx">app</span><span class="p">.</span><span class="nx">channel</span><span class="p">,</span>
+                        <span class="nx">username</span><span class="o">:</span> <span class="nx">app</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span>
+                        <span class="nx">text</span><span class="o">:</span> <span class="nx">app</span><span class="p">.</span><span class="nx">newMessage</span>
+                    <span class="p">});</span>
+                    <span class="c1">// Clear text</span>
+                    <span class="nx">app</span><span class="p">.</span><span class="nx">$set</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="s1">&#39;newMessage&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+
+        <span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;connect&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Connect&#39;</span><span class="p">)</span>
+        <span class="p">});</span>
+
+        <span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;new_message&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// Recibimos los nuevos mensajes y los añadimos a nuestro array</span>
+            <span class="kd">let</span> <span class="nx">my_messages</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">messages</span><span class="p">;</span>
+            <span class="nx">my_messages</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+                <span class="nx">username</span><span class="o">:</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span>
+                <span class="nx">text</span><span class="o">:</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">text</span>
+            <span class="p">})</span>
+            <span class="nx">app</span><span class="p">.</span><span class="nx">$set</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="s1">&#39;messages&#39;</span><span class="p">,</span> <span class="nx">my_messages</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h3>Resultado final</h3>
+<p>Ahora abrimos el navegador en la direccion http://127.0.0.1:5000/&lt;usuario&gt; donde &lt;usuario&gt; lo puede reemplazar con su nombre, este es su nombre de usuario en el chat.</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html>
