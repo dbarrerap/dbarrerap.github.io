@@ -1,5 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Coding Overload</title><link href="https://dbarrerap.github.io/" rel="alternate"></link><link href="https://dbarrerap.github.io/feeds/all.atom.xml" rel="self"></link><id>https://dbarrerap.github.io/</id><updated>2021-08-18T00:00:00-05:00</updated><subtitle>Pushing buttons until it works...</subtitle><entry><title>.NET Core - Aplicacion MVC Basica</title><link href="https://dbarrerap.github.io/dotnetcore-mvc-1.html" rel="alternate"></link><published>2021-08-18T00:00:00-05:00</published><updated>2021-08-18T00:00:00-05:00</updated><author><name>David E. Barrera</name></author><id>tag:dbarrerap.github.io,2021-08-18:/dotnetcore-mvc-1.html</id><summary type="html">&lt;p&gt;Una guia para la creacion de una aplicacion web usando .NET Core/EF y SQLite.&lt;/p&gt;</summary><content type="html">&lt;p&gt;En esta pequeña guia, vamos a crear una pequeña aplicacion web usando la arquitectura MVC en ASP.NET Core,
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Coding Overload</title><link href="https://dbarrerap.github.io/" rel="alternate"></link><link href="https://dbarrerap.github.io/feeds/all.atom.xml" rel="self"></link><id>https://dbarrerap.github.io/</id><updated>2021-08-25T00:00:00-05:00</updated><subtitle>Pushing buttons until it works...</subtitle><subtitle>Pushing buttons until it works...</subtitle><entry><title>Que son las operaciones CRUD usando Django</title><link href="https://dbarrerap.github.io/django-crud.html" rel="alternate"></link><published>2021-08-25T00:00:00-05:00</published><updated>2021-08-25T00:00:00-05:00</updated><author><name>David E. Barrera</name></author><id>tag:dbarrerap.github.io,2021-08-25:/django-crud.html</id><summary type="html">&lt;p&gt;En este articulo usaremos un framework de Python llamado Django y realizaremos operaciones CRUD para realizar un catalogo de libros.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Que es Django?&lt;/h2&gt;
+&lt;p&gt;Django es un framework web de alto nivel que permite el desarrollo rápido de sitios web seguros y mantenibles. Desarrollado por programadores experimentados, Django se encarga de gran parte de las complicaciones del desarrollo web, por lo que puedes concentrarte en escribir tu aplicación sin necesidad de reinventar la rueda. Es gratuito y de código abierto, tiene una comunidad próspera y activa, una gran documentación y muchas opciones de soporte gratuito y de pago.&lt;/p&gt;
+&lt;p&gt;Django fue desarrollado inicialmente entre 2003 y 2005 por un equipo que era responsable de crear y mantener sitios web de periódicos. Después de crear varios sitios, el equipo empezó a tener en cuenta y reutilizar muchos códigos y patrones de diseño comunes. Este código común se convirtió en un framework web genérico, que fue de código abierto, conocido como proyecto "Django" en julio de 2005.&lt;/p&gt;
+&lt;p&gt;Django ha continuado creciendo y mejorando desde su primer hito, el lanzamiento de la versión (1.0) en septiembre de 2008, hasta el reciente lanzamiento de la versión 1.11 (2017). Cada lanzamiento ha añadido nuevas funcionalidades y solucionado errores, que van desde soporte de nuevos tipos de bases de datos, motores de plantillas, caching, hasta la adición de funciones genéricas y clases de visualización (que reducen la cantidad de código que los desarrolladores tiene que escribir para numerosas tareas de programación).&lt;/p&gt;
+&lt;p&gt;Para mas informacion, &lt;a href="https://developer.mozilla.org/es/docs/Learn/Server-side/Django/Introduction"&gt;leer aqui&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Configuracion de Ambiente de Desarrollo&lt;/h2&gt;
+&lt;p&gt;El entorno de desarrollo es una instalación de Django en su computadora local que puede utilizar para desarrollar y probar aplicaciones de Django antes de implementarlas en un entorno de producción.&lt;/p&gt;
+&lt;p&gt;Las principales herramientas que proporciona el propio Django son un conjunto de scripts de Python para crear y trabajar con proyectos de Django, junto con un servidor web de desarrollo simple que puede usar para probar aplicaciones web locales (es decir, en su computadora, no en un servidor web externo). en el navegador web de su computadora.&lt;/p&gt;
+&lt;p&gt;Hay otras herramientas periféricas, que forman parte del entorno de desarrollo, que no cubriremos aquí. Estos incluyen cosas como un editor de texto o IDE, yo estare usando &lt;a href="https://code.visualstudio.com/download"&gt;Visual Studio Code&lt;/a&gt;, para editar código y una herramienta de administración de control de fuente como &lt;a href="https://git-scm.com/"&gt;Git&lt;/a&gt; para administrar de manera segura diferentes versiones de su código. Suponemos que ya tiene instalado un editor de texto.&lt;/p&gt;
+&lt;h3&gt;Usando Django en un ambiente virtual de Python&lt;/h3&gt;
+&lt;p&gt;Iniciemos creando un ambiente virtual.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;python3 -m venv djangovenv
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Y lo activamos&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# Linux/macOS
+$ source djangovenv/bin/activate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# Windows
+&amp;gt; djangovenv\Scripts\activate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;A partir de este momento se asume que todos los comandos mostrados son ejecutados en el ambiente virtual.&lt;/p&gt;
+&lt;h3&gt;Instalando Django&lt;/h3&gt;
+&lt;p&gt;Una vez en el ambiente virtual, instalamos Django.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&amp;gt; pip install django
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Podemos probar que esta correctamente instalado ejecutando el siguiente comando&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&amp;gt; python -m django --version
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Creando un esqueleto&lt;/h2&gt;
+&lt;p&gt;Una vez instalado, crearemos un proyecto, el cual luego agregaremos con componentes especificos a la aplicacion web como modelos, vistas, rutas y preferencias.&lt;/p&gt;
+&lt;p&gt;El flujo de trabajo es usualmente el siguiente:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Usar la herramienta &lt;code&gt;django-admin&lt;/code&gt; para crear la carpeta del proyecto, plantillas basica y &lt;code&gt;manage.py&lt;/code&gt; que sirve para administrar el proyecto.&lt;/li&gt;
+&lt;li&gt;Usar &lt;code&gt;manage.py&lt;/code&gt; para crear uno o mas aplicaciones.&lt;/li&gt;
+&lt;li&gt;Registrar las nuevas aplicaciones para incluirlas en el proyecto.&lt;/li&gt;
+&lt;li&gt;Enganchar las rutas de cada aplicacion.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Crear el proyecto&lt;/h2&gt;
+&lt;p&gt;Crear un nuevo proyecto vacio usando la herramienta &lt;code&gt;django-admin&lt;/code&gt; y luego entramos en la carpeta&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;django-admin startproject libreria
+cd libreria
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;La carpeta &lt;code&gt;libreria&lt;/code&gt; cuenta con la siguiente estructura&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;libreria
+|- manage.py
+|- libreria/
+   |- __init__.py
+   |- asgi.py
+   |- settings.py
+   |- urls.py
+   |- wsgi.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Los archivos importantes aqui son:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;settings.py&lt;/strong&gt; contiene las preferencias del sitio web, incluye las aplicaciones registradas, la ubicacion de archivos estaticos, detalles de la configuracion de base de datos, etc.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;urls.py&lt;/strong&gt; define conexion entre ruta y vista. Si bien este archivo puede registrar todas las rutas del proyecto, lo mejor es delegar las rutas a cada aplicacion, como lo veremos luego.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;manage.py&lt;/strong&gt; es el script usado para crear aplicaciones, trabajar con la base de datos e iniciar el servidor de desarrollo.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Crear aplicacion&lt;/h2&gt;
+&lt;div class="row"&gt;&lt;div class="col-10 offset-1"&gt;
+&lt;blockquote class="blockquote"&gt;¿Cuál es la diferencia entre un proyecto y una aplicación? Una aplicación es una aplicación web que hace algo, por ejemplo, un sistema de registro web, una base de datos de registros públicos o una pequeña aplicación de encuesta. Un proyecto es una colección de configuraciones y aplicaciones para un sitio web en particular. Un proyecto puede contener varias aplicaciones. Una aplicación puede estar en varios proyectos.&lt;/blockquote&gt;
+&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A continuacion crearemos una aplicacion llamada &lt;code&gt;catalogo&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;python manage.py startapp catalogo
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Esto creara una carpeta llamada &lt;code&gt;catalogo&lt;/code&gt; con diferentes archivos para nuestra aplicacion.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;libreria
+|- manage.py
+|- libreria/
+|- catalogo/
+   |- migrations/
+   |- __init__.py
+   |- admin.py
+   |- apps.py
+   |- models.py
+   |- tests.py
+   |- views.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Registrar la aplicacion&lt;/h2&gt;
+&lt;p&gt;Ahora que la aplicacion ha sido creada, debemos registrarla con el proyecto para ser incluida cuando ejecutemos alguna herramienta.&lt;/p&gt;
+&lt;p&gt;Abrimos el archivo &lt;code&gt;settings.py&lt;/code&gt; en el proyecto y buscamos la lista llamada &lt;code&gt;INSTALLED_APPS&lt;/code&gt; y agregamos &lt;code&gt;catalogo&lt;/code&gt; a la lista.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;INSTALLED_APPS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;django.contrib.admin&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;django.contrib.auth&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;django.contrib.contenttypes&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;django.contrib.sessions&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;django.contrib.messages&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;django.contrib.staticfiles&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="c1"&gt;# Aqui agregamos nuevas aplicaciones&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;catalogo.apps.CatalogoConfig&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;La nueva linea especifica el objeto de configuracion que fue generado en &lt;code&gt;/libreria/catalogo/apps.py&lt;/code&gt; al crear la aplicacion.&lt;/p&gt;
+&lt;h2&gt;Especificando la base de datos&lt;/h2&gt;
+&lt;p&gt;En el mismo archivo tambien se puede configurar la base de datos a usar. Django es compatible con varios &lt;a href="https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-DATABASE-ENGINE"&gt;motores de base de datos&lt;/a&gt;. En lo posible, intentar mantener una misma configuracion entre desarrollo y produccion, para reducir problemas de funcionamiento.&lt;/p&gt;
+&lt;p&gt;Para este tutorial usaremos &lt;a href="https://www.sqlite.org"&gt;SQLite&lt;/a&gt;. Esta ya viene configurada por defecto.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;DATABASES&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;default&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;ENGINE&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;django.db.backends.sqlite3&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;NAME&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;BASE_DIR&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;db.sqlite3&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Enganchar las rutas&lt;/h2&gt;
+&lt;p&gt;Al crear el proyecto, se creo un archivo &lt;code&gt;urls.py&lt;/code&gt; que se encarga de direccionar al usuario a la aplicacion correcta de acuerdo a lo que haya escrito en la barra de direcciones. Como se dijo mas arriba, aqui podemos manejar las rutas de todo el proyecto, pero lo mas comun es delegar a cada aplicacion manejar sus propias rutas. El mismo archivo nos explica como.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;locallibrary URL Configuration&lt;/span&gt;
+
+&lt;span class="sd"&gt;The `urlpatterns` list routes URLs to views. For more information please see:&lt;/span&gt;
+&lt;span class="sd"&gt;    https://docs.djangoproject.com/en/3.1/topics/http/urls/&lt;/span&gt;
+&lt;span class="sd"&gt;Examples:&lt;/span&gt;
+&lt;span class="sd"&gt;Function views&lt;/span&gt;
+&lt;span class="sd"&gt;    1. Add an import:  from my_app import views&lt;/span&gt;
+&lt;span class="sd"&gt;    2. Add a URL to urlpatterns:  path(&amp;#39;&amp;#39;, views.home, name=&amp;#39;home&amp;#39;)&lt;/span&gt;
+&lt;span class="sd"&gt;Class-based views&lt;/span&gt;
+&lt;span class="sd"&gt;    1. Add an import:  from other_app.views import Home&lt;/span&gt;
+&lt;span class="sd"&gt;    2. Add a URL to urlpatterns:  path(&amp;#39;&amp;#39;, Home.as_view(), name=&amp;#39;home&amp;#39;)&lt;/span&gt;
+&lt;span class="sd"&gt;Including another URLconf&lt;/span&gt;
+&lt;span class="sd"&gt;    1. Import the include() function: from django.urls import include, path&lt;/span&gt;
+&lt;span class="sd"&gt;    2. Add a URL to urlpatterns:  path(&amp;#39;blog/&amp;#39;, include(&amp;#39;blog.urls&amp;#39;))&lt;/span&gt;
+&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.contrib&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;admin&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.urls&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;
+
+&lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+    &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;admin/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;admin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urls&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Las rutas son manejadas mediante &lt;code&gt;urlpatterns&lt;/code&gt; que es una lista de funciones &lt;code&gt;path()&lt;/code&gt;. Cada &lt;code&gt;path()&lt;/code&gt; asocia un patron de URL con una vista definida en &lt;code&gt;views.py&lt;/code&gt;. Esta lista inicialmente define la URL &lt;code&gt;admin/&lt;/code&gt; con el modulo &lt;code&gt;admin.site.urls&lt;/code&gt; que contiene la definicion de URLs para la aplicacion de Administracion.&lt;/p&gt;
+&lt;p&gt;La documentacion al inicio del archivo nos indica las diferentes maneras de agregar una ruta en esta lista. Usaremos el tercer patron para agregar las rutas de nuestra aplicacion. Para esto debemos importar la funcion &lt;code&gt;include&lt;/code&gt; del modulo &lt;code&gt;django.urls&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Documentacion eliminada para brevedad&lt;/span&gt;
+
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.contrib&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;admin&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.urls&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;
+
+&lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+    &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;admin/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;admin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urls&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;catalogo/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;catalogo.urls&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
+&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Adicional a esto, si ejecutamos el servidor de prueba y vamos a http://127.0.0.1:8000 nos mostrara un error de que la ruta &lt;code&gt;/&lt;/code&gt; no ha sido definida. En nuestro caso, solo tenemos una aplicacion por lo cual redigiremos a nuestra aplicacion.&lt;/p&gt;
+&lt;p&gt;El archivo quedaria asi:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Documentacion eliminada para brevedad&lt;/span&gt;
+
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.contrib&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;admin&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.urls&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.views.generic&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;RedirectView&lt;/span&gt;
+
+&lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+    &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;admin/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;admin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urls&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;catalogo/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;catalogo.urls&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
+    &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;RedirectView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;as_view&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;catalogo/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;permanent&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
+&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Y como ultimo paso, debemos crear el archivo &lt;code&gt;urls.py&lt;/code&gt; dentro de la aplicacion con el siguiente contenido&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.urls&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;.&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;views&lt;/span&gt;
+
+&lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+
+&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Probando el esqueleto&lt;/h2&gt;
+&lt;p&gt;Uf! Eso ha sido bastante! Pero ya tenemos el esqueleto completo y listo para su primera prueba. La aplicacion como tal no hace nada aun, pero es bueno probar para ver si no hemos roto algo.&lt;/p&gt;
+&lt;p&gt;Para esto ejecutaremos nuestro servidor de desarrollo mediante el comando &lt;code&gt;runserver&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;python manage.py runserver
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Al acceder a la direccion http://127.0.0.1:8000 veremos el siguiente mensaje de error&lt;/p&gt;
+&lt;div class=row&gt;&lt;div class="col-md-10 offset-md-1"&gt;
+&lt;img src="https://dbarrerap.github.io/images/catalogo_sinrutas.png" class=img-fluid&gt;
+&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Esto es porque aun no hemos definido rutas y vistas en nuestra aplicacion, en el modulo &lt;code&gt;catalogo.urls&lt;/code&gt; (archivo &lt;code&gt;catalogo/urls.py&lt;/code&gt;)&lt;/p&gt;
+&lt;p&gt;Pero en este punto sabemos que funciona!&lt;/p&gt;</content><category term="programming"></category><category term="python"></category><category term="django"></category><category term="crud"></category><category term="framework"></category><category term="web development"></category></entry><entry><title>.NET Core - Aplicacion MVC Basica</title><link href="https://dbarrerap.github.io/dotnetcore-mvc-1.html" rel="alternate"></link><published>2021-08-18T00:00:00-05:00</published><updated>2021-08-18T00:00:00-05:00</updated><author><name>David E. Barrera</name></author><id>tag:dbarrerap.github.io,2021-08-18:/dotnetcore-mvc-1.html</id><summary type="html">&lt;p&gt;Una guia para la creacion de una aplicacion web usando .NET Core/EF y SQLite.&lt;/p&gt;</summary><content type="html">&lt;p&gt;En esta pequeña guia, vamos a crear una pequeña aplicacion web usando la arquitectura MVC en ASP.NET Core,
 en particular un blog. Tutorial basico. Esta guia puede ser seguida en todos los sistemas operativos, 
 con ciertas variaciones, asi que ajustar de acuerdo a la necesidad. &lt;/p&gt;
 &lt;p&gt;Las herramientas a utilizar en este tutorial son:&lt;/p&gt;
