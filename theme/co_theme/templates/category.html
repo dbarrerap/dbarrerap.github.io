@@ -23,14 +23,6 @@
         {% endfor %}
     </tbody>
 </table>
-<ul>
-    {% for article in articles_page.object_list %}
-    <li>
-        <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a>
-        <time>{{ article.date|strftime('%b %Y') }}</time>
-    </li>
-    {% endfor %}
-</ul>
 {% if articles_page.has_other_pages() %}
     {% include 'pagination.html' %}
 {% endif %}
