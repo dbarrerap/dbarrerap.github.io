@@ -55,7 +55,8 @@
     <h1>Python + PyQt5: Slots predeterminados</h1>
 <div class="alert alert-secondary text-muted">
     Publicado: 2020/05/18
-    <br>Autores: David E. Barrera</div></header>
+    <br>Autores: David E. Barrera    <br>Tags: python, qt5, gui, development
+</div></header>
 <p>Hasta ahora hemos visto ciertos widgets y hemos declarado nuestro comportamiento de manera personalizada. Pero Qt no solo provee la apariencia física de los widgets, sino que también provee comportamientos, <code>slots</code>,  predeterminados.</p>
 <p>El manejo de eventos es un mecanismo importante en todas las aplicaciones. La aplicación no solo debe reconocer el evento, sino que también debe tomar la acción correspondiente para servir el evento. La acción tomada en cualquier evento determina el curso de la aplicación. Para mostrar esto, desarrollaremos una aplicacion que copie y pegue un texto de un campo de texto en otro.</p>
 <p>Esta guía te hará comprender cómo un evento realizado en un widget invoca una acción predefinida en el widget asociado. Debido a que queremos copiar el contenido de un widget <code>LineEdit</code> al hacer clic en el botón, necesitamos invocar el método <code>selectAll()</code> cuando se produce el evento <code>pressed()</code> en el botón. Además, necesitamos invocar el método <code>copy()</code> cuando se produce el evento <code>released()</code> en el botón. Para pegar el contenido en el portapapeles en otro widget de <code>LineEdit</code> al hacer clic en otro botón, necesitamos invocar el método <code>paste()</code> cuando ocurra el evento <code>clicked()</code> en otro botón.</p>
