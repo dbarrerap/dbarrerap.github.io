@@ -4,4 +4,7 @@
     {% if article.authors %}
     <br>Autores: {% for author in article.authors %}{{ author }}{% endfor %}
     {% endif %}
+    {% if article.tags %}
+    <br>Tags: {{ article.tags | join(', ')}}
+    {% endif %}
 </div>
